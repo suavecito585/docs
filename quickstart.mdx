@@ -1,7 +1,7 @@
 ---
-title: "Get started with MCP-Discord in minutes"
+title: "MCP-Discord Quickstart: Bot Setup to First Message"
 sidebarTitle: "Quickstart"
-description: "Install MCP-Discord, configure your Discord bot, and connect it to your AI assistant in three steps. Works with Claude, Cursor, Windsurf, and any MCP client."
+description: "Install MCP-Discord, configure your Discord bot, and connect it to your AI assistant. Works with Claude Desktop, Cursor, Windsurf, and any MCP client."
 ---
 
 This guide walks you through creating a Discord bot, installing MCP-Discord, and connecting it to your AI assistant. By the end you'll be able to send a Discord message directly from a conversation with your AI — no manual API calls required. The whole process takes about five minutes.
@@ -126,17 +126,14 @@ This guide walks you through creating a Discord bot, installing MCP-Discord, and
         {
           "mcpServers": {
             "discord": {
-              "command": "node",
-              "args": ["path/to/mcp-discord/build/index.js"],
-              "env": {
-                "DISCORD_TOKEN": "your_discord_bot_token"
-              }
+              "command": "npx",
+              "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
             }
           }
         }
         ```
 
-        Replace `path/to/mcp-discord/build/index.js` with the absolute path to the built file on your machine, and substitute your real bot token.
+        Replace `YOUR_DISCORD_TOKEN` with the token you copied in Step 1.
 
         Save the file, then **restart Claude Desktop** so it picks up the new configuration.
       </Tab>
@@ -147,23 +144,20 @@ This guide walks you through creating a Discord bot, installing MCP-Discord, and
         {
           "mcpServers": {
             "discord": {
-              "command": "node",
-              "args": ["path/to/mcp-discord/build/index.js"],
-              "env": {
-                "DISCORD_TOKEN": "your_discord_bot_token"
-              }
+              "command": "npx",
+              "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
             }
           }
         }
         ```
 
-        Reload the Cursor window after saving.
+        Replace `YOUR_DISCORD_TOKEN` with your bot token, then reload the Cursor window.
       </Tab>
       <Tab title="Other MCP clients">
-        Any MCP client that supports stdio transport can launch MCP-Discord as a subprocess. Use the following command and environment variable:
+        Any MCP client that supports stdio transport can launch MCP-Discord as a subprocess. Use NPX for the simplest setup:
 
         ```bash
-        node build/index.js --config "your_discord_bot_token"
+        npx mcp-discord --config "your_discord_bot_token"
         ```
 
         Or pass the token via the `DISCORD_TOKEN` environment variable instead of the `--config` flag. Consult your client's documentation for how to register a stdio MCP server.

@@ -214,6 +214,12 @@ These tools handle bot authentication and server discovery. You rarely need to c
 
 Authenticates the bot with Discord using the configured bot token. This tool is called automatically at startup and typically does not need to be invoked manually.
 
+<Accordion title="Optional parameters">
+  <ParamField body="token" type="string">
+    A Discord bot token to use for authentication. If omitted, MCP-Discord uses the token from its environment configuration. Only supply this if you need to authenticate with a different token than the one configured at startup.
+  </ParamField>
+</Accordion>
+
 ### discord_list_servers
 
 Returns a list of every Discord server the bot is currently a member of, including each server's ID and name. Use this to look up a `guildId` when you don't have it on hand.

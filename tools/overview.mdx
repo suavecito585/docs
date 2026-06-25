@@ -1,10 +1,10 @@
 ---
 title: "MCP-Discord tools reference overview"
 sidebarTitle: "Overview"
-description: "MCP-Discord exposes 44 Discord tools to your AI assistant. Browse all tools by category: messaging, reactions, webhooks, channels, forums, roles, and members."
+description: "MCP-Discord exposes 43 Discord tools to your AI assistant. Browse all tools by category: messaging, reactions, webhooks, channels, forums, roles, and members."
 ---
 
-MCP-Discord gives your AI assistant direct access to Discord through 44 callable tools. When you type a request in natural language — "send a message to #general" or "search for messages mentioning deployments" — your AI translates that intent into a tool call and executes it against Discord's API on your behalf. No manual API work required.
+MCP-Discord gives your AI assistant direct access to Discord through 43 callable tools. When you type a request in natural language — "send a message to #general" or "search for messages mentioning deployments" — your AI translates that intent into a tool call and executes it against Discord's API on your behalf. No manual API work required.
 
 ## How tools work
 
@@ -18,7 +18,7 @@ Each tool has a name, a set of required parameters, and optional parameters that
 
 ### Messaging
 
-Tools for sending, reading, searching, editing, and deleting messages in text channels.
+Tools for sending, reading, searching, editing, and deleting messages in text channels, plus authentication and server discovery.
 
 | Tool | Description |
 |---|---|
@@ -27,6 +27,9 @@ Tools for sending, reading, searching, editing, and deleting messages in text ch
 | `discord_search_messages` | Search a server's messages with advanced filters (author, content, attachments, and more) |
 | `discord_edit_message` | Edit a message previously sent by the bot |
 | `discord_delete_message` | Delete a message from a channel |
+| `discord_login` | Authenticate the bot with Discord (called automatically on startup) |
+| `discord_list_servers` | List all servers the bot belongs to |
+| `discord_get_server_info` | Retrieve detailed information about a specific server |
 
 ### Reactions
 
@@ -78,10 +81,10 @@ Tools for managing forum channels and threads.
 | `discord_get_forum_post` | Retrieve a specific forum post |
 | `discord_list_forum_threads` | List threads in a forum channel |
 | `discord_reply_to_forum` | Post a reply inside a forum thread |
-| `discord_update_forum_post` | Edit the title or tags of a forum post |
+| `discord_update_forum_post` | Edit the title, tags, or status of a forum post |
 | `discord_delete_forum_post` | Delete a forum post |
 | `discord_get_forum_tags` | Retrieve available tags for a forum channel |
-| `discord_set_forum_tags` | Apply tags to a forum post |
+| `discord_set_forum_tags` | Define the complete set of tags for a forum channel |
 
 ### Roles
 
@@ -102,18 +105,8 @@ Tools for inspecting server membership.
 
 | Tool | Description |
 |---|---|
-| `discord_list_members` | List members in a server |
+| `discord_list_members` | List members in a server with pagination support |
 | `discord_get_member` | Retrieve details about a specific server member |
-
-### Server
-
-Tools for authentication and server discovery.
-
-| Tool | Description |
-|---|---|
-| `discord_login` | Authenticate the bot with Discord (called automatically on startup) |
-| `discord_list_servers` | List all servers the bot belongs to |
-| `discord_get_server_info` | Retrieve detailed information about a specific server |
 
 ## Detailed reference pages
 
@@ -121,7 +114,7 @@ The following pages document each tool's parameters and usage examples in full.
 
 <CardGroup cols={2}>
   <Card title="Messages" icon="message" href="/tools/messages">
-    Send, read, search, edit, and delete messages in text channels.
+    Send, read, search, edit, and delete messages in text channels, plus server discovery and authentication.
   </Card>
   <Card title="Reactions" icon="face-smile" href="/tools/reactions">
     Add, remove, and list emoji reactions on messages.
@@ -129,7 +122,16 @@ The following pages document each tool's parameters and usage examples in full.
   <Card title="Webhooks" icon="webhook" href="/tools/webhooks">
     Create webhooks, send webhook messages, and manage webhook settings.
   </Card>
-  <Card title="Channels & Forums" icon="layer-group" href="/tools/channels">
-    Manage text, voice, forum channels, categories, and permissions.
+  <Card title="Channels" icon="layer-group" href="/tools/channels">
+    Manage text, voice, and forum channels, categories, and permission overrides.
+  </Card>
+  <Card title="Forums" icon="comments" href="/tools/forums">
+    Create and manage forum posts, replies, threads, and tags.
+  </Card>
+  <Card title="Roles" icon="shield" href="/tools/roles">
+    Create, edit, assign, and remove server roles and permissions.
+  </Card>
+  <Card title="Members" icon="users" href="/tools/members">
+    List server members and look up individual member details.
   </Card>
 </CardGroup>

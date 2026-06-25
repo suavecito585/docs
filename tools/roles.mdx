@@ -38,7 +38,7 @@ Creates a new role in a server. You can configure its color, whether it shows se
 
 <Accordion title="Optional parameters">
   <ParamField body="color" type="string">
-    The color of the role, shown next to the member's name. Accepts a hex color code (e.g. `'#FF5733'`) or a common color name (e.g. `'red'`, `'blue'`).
+    The color of the role, shown next to the member's name in the member list and in chat. Accepts a hex color code (e.g. `'#FF0000'` for red, `'#3498DB'` for blue, `'#2ECC71'` for green).
   </ParamField>
 
   <ParamField body="hoist" type="boolean">
@@ -59,7 +59,7 @@ Creates a new role in a server. You can configure its color, whether it shows se
 </Accordion>
 
 <Tip>
-  Common permission flag names you can use in the `permissions` array include: `ViewChannel`, `SendMessages`, `ManageMessages`, `ManageChannels`, and `Administrator`. Discord has many more — use `discord_list_roles` on an existing role to inspect the flags it already holds, or consult the Discord developer documentation for the full list.
+  Common permission flag names you can use in the `permissions` array include: `ViewChannel`, `SendMessages`, `ManageMessages`, `ManageChannels`, `ManageWebhooks`, `ManageRoles`, `AddReactions`, `KickMembers`, `BanMembers`, and `Administrator`. Use `discord_list_roles` on an existing role to inspect the flags it already holds, or consult the [Discord developer documentation](https://discord.com/developers/docs/topics/permissions) for the full list.
 </Tip>
 
 **Example prompt:** *"Create a role called `Moderator` with color `#3498DB`, hoisted, mentionable, and with `ManageMessages` and `ManageChannels` permissions."*
@@ -84,7 +84,7 @@ Updates an existing role's name, appearance, permissions, or hierarchy position.
   </ParamField>
 
   <ParamField body="color" type="string">
-    A new color for the role, as a hex code or color name.
+    A new color for the role. Accepts a hex color code (e.g. `'#FF0000'`).
   </ParamField>
 
   <ParamField body="hoist" type="boolean">
@@ -109,7 +109,7 @@ Updates an existing role's name, appearance, permissions, or hierarchy position.
 </Accordion>
 
 <Tip>
-  The same permission flag names apply here as in `discord_create_role` — for example: `ViewChannel`, `SendMessages`, `ManageMessages`, `ManageChannels`, and `Administrator`.
+  The same permission flag names apply here as in `discord_create_role` — for example: `ViewChannel`, `SendMessages`, `ManageMessages`, `ManageChannels`, `ManageWebhooks`, `ManageRoles`, `AddReactions`, and `Administrator`.
 </Tip>
 
 **Example prompt:** *"Edit role `1122334455` to add `ManageMessages` permission and move it to position 3 in the hierarchy."*

@@ -1,5 +1,5 @@
 ---
-title: "Configure MCP-Discord transport and bot token"
+title: "MCP-Discord Configuration: Tokens, Transport, and Ports"
 sidebarTitle: "Configuration"
 description: "Configure MCP-Discord with your Discord bot token, choose between stdio and HTTP transports, and set up port and runtime options for your deployment."
 ---
@@ -85,17 +85,14 @@ MCP-Discord supports two transports. Choose based on how your AI tool launches a
     {
       "mcpServers": {
         "discord": {
-          "command": "node",
-          "args": ["path/to/mcp-discord/build/index.js"],
-          "env": {
-            "DISCORD_TOKEN": "your_discord_bot_token"
-          }
+          "command": "npx",
+          "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
         }
       }
     }
     ```
 
-    Replace `path/to/mcp-discord/build/index.js` with the absolute path to the built entry point on your machine.
+    Replace `YOUR_DISCORD_TOKEN` with your bot token. NPX handles downloading and running the server automatically — no build step required.
 
     <Note>
       Restart your AI tool after editing the config file so it picks up the new server registration.
@@ -183,11 +180,8 @@ docker run \
 {
   "mcpServers": {
     "discord": {
-      "command": "node",
-      "args": ["path/to/mcp-discord/build/index.js"],
-      "env": {
-        "DISCORD_TOKEN": "your_discord_bot_token"
-      }
+      "command": "npx",
+      "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
     }
   }
 }

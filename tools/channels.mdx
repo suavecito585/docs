@@ -268,6 +268,10 @@ Sets permission overrides for a role or user on a channel or category. Pass perm
   </ParamField>
 </Accordion>
 
+<Tip>
+  Common permission flag names for `allow` and `deny` arrays: `ViewChannel`, `SendMessages`, `ManageMessages`, `ManageChannels`, `ManageWebhooks`, `ManageRoles`, `AddReactions`, `CreatePublicThreads`, `CreatePrivateThreads`, `ManageThreads`, `AttachFiles`, `EmbedLinks`, `MentionEveryone`. See the [Discord developer documentation](https://discord.com/developers/docs/topics/permissions) for the complete list.
+</Tip>
+
 **Example prompt:** *"On channel `1234567890`, deny `SendMessages` and `AddReactions` for the `Muted` role, and allow `ViewChannel`."*
 
 ---
