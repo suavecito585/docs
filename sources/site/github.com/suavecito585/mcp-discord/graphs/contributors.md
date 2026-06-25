@@ -1,0 +1,22 @@
+# Source: https://github.com/suavecito585/mcp-discord/graphs/contributors
+
+[suavecito585](https://github.com/suavecito585) / **[mcp-discord](https://github.com/suavecito585/mcp-discord)** Public
+
+forked from [barryyip0625/mcp-discord](https://github.com/barryyip0625/mcp-discord)
+
+- [Notifications](https://github.com/login?return_to=%2Fsuavecito585%2Fmcp-discord) You must be signed in to change notification settings
+- [Fork 0](https://github.com/login?return_to=%2Fsuavecito585%2Fmcp-discord)
+- [Star 0](https://github.com/login?return_to=%2Fsuavecito585%2Fmcp-discord)
+ 
+
+# Insights: suavecito585/mcp-discord
+
+# Contributors
+
+Contributions per week to main, excluding merge commits
+
+Period: Last 3 monthsContributions: Commits
+
+Loading
+
+Crunching the latest data, just for you. Hang tight…

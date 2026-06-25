@@ -1,0 +1,131 @@
+---
+title: "Discord reaction tools: add, remove, and list"
+sidebarTitle: "Reactions"
+description: "Reference for MCP-Discord reaction tools: add single or multiple emoji reactions to messages, remove reactions, and list users who reacted with a specific emoji."
+---
+
+The reaction tools let your AI assistant add and manage emoji reactions on any Discord message. You can react with a single emoji, bulk-apply several reactions at once, remove reactions, and look up which users responded to a particular emoji — all without needing to open Discord yourself.
+
+<Tip>
+  For **standard Unicode emoji**, pass the character directly (e.g. `🎉`, `👍`, `🔥`). For **custom server emoji**, pass the emoji's name as a string (e.g. `blobwave`). Custom animated emoji use the same name-based format. If a custom emoji isn't found in the current server, the request will fail.
+</Tip>
+
+---
+
+## discord_add_reaction
+
+Adds a single emoji reaction to a specific message. The bot reacts as itself, and the reaction appears in Discord's reaction strip below the message.
+
+**Example prompt:** *"React to the latest message in #announcements with 👍."*
+
+<ParamField body="channelId" type="string" required>
+  The ID of the channel containing the message.
+</ParamField>
+
+<ParamField body="messageId" type="string" required>
+  The ID of the message to react to.
+</ParamField>
+
+<ParamField body="emoji" type="string" required>
+  The emoji to react with. Use a Unicode character (e.g. `🎉`) or a custom emoji name (e.g. `blobwave`).
+</ParamField>
+
+```text Example prompts
+"Add a 🎉 reaction to message 987654321098765432 in channel 123456789012345678."
+"React to that message with the 'approved' custom emoji."
+```
+
+---
+
+## discord_add_multiple_reactions
+
+Adds several emoji reactions to a message in a single call. This is more efficient than calling `discord_add_reaction` repeatedly when you want to apply a set of reactions at once.
+
+**Example prompt:** *"React to that poll message with 1️⃣, 2️⃣, and 3️⃣."*
+
+<ParamField body="channelId" type="string" required>
+  The ID of the channel containing the message.
+</ParamField>
+
+<ParamField body="messageId" type="string" required>
+  The ID of the message to react to.
+</ParamField>
+
+<ParamField body="emojis" type="string[]" required>
+  An array of emoji strings to add. Each entry follows the same format as `discord_add_reaction` — Unicode characters or custom emoji names.
+</ParamField>
+
+```text Example prompts
+"Add 👍, 👎, and 🤷 reactions to message 987654321098765432."
+"React to the announcement with ✅ and 🔔 at the same time."
+```
+
+---
+
+## discord_remove_reaction
+
+Removes a reaction from a message. By default it removes the bot's own reaction. If you supply a `userId`, it removes that user's reaction instead — this requires the bot to have the **Manage Messages** permission in the channel.
+
+**Example prompt:** *"Remove the 👎 reaction from that message."*
+
+<ParamField body="channelId" type="string" required>
+  The ID of the channel containing the message.
+</ParamField>
+
+<ParamField body="messageId" type="string" required>
+  The ID of the message to remove the reaction from.
+</ParamField>
+
+<ParamField body="emoji" type="string" required>
+  The emoji reaction to remove. Must match the emoji that was originally added.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="userId" type="string">
+    The ID of the user whose reaction should be removed. If omitted, the bot removes its own reaction. Removing another user's reaction requires the **Manage Messages** permission.
+  </ParamField>
+</Accordion>
+
+<Warning>
+  Removing another user's reaction requires the bot to have the **Manage Messages** permission in the target channel. Without it, the request will return a permission error.
+</Warning>
+
+```text Example prompts
+"Remove the bot's 👍 reaction from message 987654321098765432."
+"Remove user 111122223333444455's 🔥 reaction from that message."
+```
+
+---
+
+## discord_get_reaction_users
+
+Returns a list of users who reacted to a message with a specific emoji. This is useful for tallying votes, checking who acknowledged a message, or auditing reactions.
+
+**Example prompt:** *"Who reacted with ✅ on the pinned announcement?"*
+
+<Note>
+  `discord_get_reaction_users` calls Discord's REST API directly and does **not** require any additional Gateway intents. You can use it regardless of which privileged intents your bot has enabled.
+</Note>
+
+<ParamField body="channelId" type="string" required>
+  The ID of the channel containing the message.
+</ParamField>
+
+<ParamField body="messageId" type="string" required>
+  The ID of the message to check reactions on.
+</ParamField>
+
+<ParamField body="emoji" type="string" required>
+  The emoji to look up. Use a Unicode character (e.g. `🟢`) or a custom emoji name string.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="limit" type="number">
+    Maximum number of users to return. Accepts values from `1` to `100`. Defaults to `100`.
+  </ParamField>
+</Accordion>
+
+```text Example prompts
+"List everyone who reacted with 🟢 on message 987654321098765432 in channel 123456789012345678."
+"Show the first 10 users who voted ✅ on that message."
+```

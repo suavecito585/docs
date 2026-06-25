@@ -1,0 +1,111 @@
+---
+title: "MCP-Discord transport modes: stdio and HTTP"
+sidebarTitle: "Transports"
+description: "MCP-Discord supports stdio for local AI tool integration and Streamable HTTP for remote server deployments. Learn which transport to use and how to configure each."
+---
+
+A transport is the communication channel between your MCP client (Claude Desktop, Cursor, Windsurf, or similar) and the MCP-Discord server. MCP-Discord supports two transports: **stdio** for local integrations where the AI tool manages the server process, and **Streamable HTTP** for standalone deployments that can serve remote clients or run in containers. Choose the one that matches your environment.
+
+<Tabs>
+  <Tab title="stdio (default)">
+    ## How stdio works
+
+    In stdio mode, your AI tool launches MCP-Discord as a child subprocess and communicates with it by writing to its standard input and reading from its standard output. The server starts when your AI tool starts and exits when it does — you do not run any separate process yourself.
+
+    This is the simplest setup and requires no open ports or network configuration.
+
+    ## When to use stdio
+
+    Use stdio when you are running MCP-Discord locally alongside a desktop AI tool. It is the correct choice for:
+
+    - **Claude Desktop** — the most common local setup
+    - **Cursor** — IDE-integrated AI workflows
+    - **Windsurf** — AI-native code editor
+    - Any other MCP-compatible local client
+
+    <Note>
+      stdio mode supports a single client connection at a time. If you need multiple clients to share one MCP-Discord instance, use the HTTP transport instead.
+    </Note>
+
+    ## Configuration
+
+    Add MCP-Discord to your AI tool's MCP server configuration. The exact file location varies by client, but the structure is the same:
+
+    ```json
+    {
+      "mcpServers": {
+        "mcp-discord": {
+          "command": "npx",
+          "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
+        }
+      }
+    }
+    ```
+
+    Replace `YOUR_DISCORD_TOKEN` with the bot token you copied during [bot setup](/concepts/bot-setup).
+
+    Your AI tool reads this configuration on startup, launches MCP-Discord automatically, and makes all 44 Discord tools available in the session.
+
+    ## Limitations
+
+    - Single client only — one AI tool instance per MCP-Discord process.
+    - Local only — the client and server must run on the same machine.
+    - Process lifetime is tied to the AI tool — the server exits when the client does.
+  </Tab>
+
+  <Tab title="Streamable HTTP">
+    ## How Streamable HTTP works
+
+    In HTTP mode, MCP-Discord runs as a persistent HTTP server that listens for connections on a configurable port. Clients connect to the `/mcp` endpoint and interact over standard HTTP. Streaming responses are delivered via **Server-Sent Events (SSE)**, and each client session is tracked with an `mcp-session-id` header so the server can route messages correctly.
+
+    | Method | Endpoint | Purpose |
+    |--------|----------|---------|
+    | `POST` | `/mcp` | Send a tool call or message to the server |
+    | `GET` | `/mcp` | Open an SSE stream to receive responses |
+    | `DELETE` | `/mcp` | Terminate the current session |
+
+    Clients can resume interrupted SSE streams by sending the `Last-Event-ID` header with the ID of the last event they received.
+
+    ## When to use HTTP
+
+    Use HTTP transport when:
+
+    - You are running MCP-Discord on a **remote server** and connecting to it from another machine.
+    - You are deploying with **Docker** or a container orchestration platform.
+    - You need **multiple clients** to connect to the same MCP-Discord instance simultaneously.
+    - You want to keep the server running independently of any particular AI tool session.
+
+    ## Starting the server
+
+    Run MCP-Discord directly with Node.js:
+
+    ```bash
+    node build/app.js --transport http --port 3000 --config YOUR_DISCORD_TOKEN
+    ```
+
+    Or run the pre-built Docker image:
+
+    ```bash
+    docker run -e DISCORD_TOKEN=YOUR_DISCORD_TOKEN -p 8080:8080 barryy625/mcp-discord:latest
+    ```
+
+    The default port is **8080**. Change it with the `--port` flag (Node.js) or by remapping the container port (Docker).
+
+    <Warning>
+      When running the HTTP transport in a networked environment, make sure the `/mcp` endpoint is not publicly accessible without authentication. Anyone who can reach the endpoint can invoke Discord tools using your bot's credentials.
+    </Warning>
+
+    ## Session management
+
+    Every client that connects to the HTTP transport receives a session ID. Include this ID in the `mcp-session-id` header on all subsequent requests so the server associates them with the correct session. When you are done, send a `DELETE` request to `/mcp` to cleanly terminate the session and free server resources.
+
+    <Tip>
+      Most MCP-compatible clients handle session headers automatically. You only need to manage them manually if you are building a custom integration against the HTTP API.
+    </Tip>
+
+    ## Limitations
+
+    - Requires a network-accessible host or port-forwarding if clients are remote.
+    - You are responsible for keeping the server process running (use a process manager like `pm2` or a container restart policy).
+  </Tab>
+</Tabs>

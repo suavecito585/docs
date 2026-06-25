@@ -1,0 +1,123 @@
+---
+title: "Use MCP-Discord with Claude Desktop"
+sidebarTitle: "Claude Desktop"
+description: "Add MCP-Discord to Claude Desktop so Claude can send messages, manage channels, and interact with your Discord server directly from chat."
+---
+
+Claude Desktop supports MCP servers out of the box. Once you add MCP-Discord to its configuration file and restart the app, Claude can send messages, read channels, manage your Discord server, and more — all from a natural language conversation. Follow the steps below to get everything connected.
+
+<Steps>
+  <Step title="Install Node.js v18 or later">
+    MCP-Discord runs on Node.js. Open a terminal and check your current version:
+
+    ```bash
+    node --version
+    ```
+
+    If the output is lower than `v18.0.0`, or if the command is not found, download and install the latest LTS release from [nodejs.org](https://nodejs.org). Restart your terminal after installing, then re-run the version check to confirm.
+  </Step>
+
+  <Step title="Get your Discord bot token">
+    MCP-Discord authenticates with Discord using a bot token. If you haven't created a bot and added it to your server yet, follow the [bot setup guide](/concepts/bot-setup) to get your token and configure the required permissions.
+
+    <Warning>
+      Keep your bot token private. Never commit it to version control or share it publicly. Anyone with your token can control your bot.
+    </Warning>
+  </Step>
+
+  <Step title="Open the Claude Desktop config file">
+    Claude Desktop stores its MCP server configuration in a JSON file. Open the file for your operating system in any text editor:
+
+    **macOS**
+    ```
+    ~/Library/Application Support/Claude/claude_desktop_config.json
+    ```
+
+    **Windows**
+    ```
+    %APPDATA%\Claude\claude_desktop_config.json
+    ```
+
+    If the file doesn't exist yet, create it as an empty file at that path — Claude Desktop will read it on the next launch.
+  </Step>
+
+  <Step title="Add the MCP-Discord server config">
+    Paste the appropriate configuration into your config file. If the file already contains other MCP servers, add the `"discord"` entry inside the existing `"mcpServers"` object rather than creating a new one.
+
+    <Tabs>
+      <Tab title="NPX (recommended)">
+        This option runs MCP-Discord directly via `npx` without a manual installation step. Replace `YOUR_DISCORD_TOKEN` with your actual bot token.
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "npx",
+              "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
+            }
+          }
+        }
+        ```
+      </Tab>
+      <Tab title="Manual build">
+        Use this option if you cloned the repository and built it locally. Replace `/path/to/mcp-discord` with the absolute path to your cloned repository, and set `YOUR_DISCORD_TOKEN` to your bot token.
+
+        ```bash
+        git clone https://github.com/barryyip0625/mcp-discord.git
+        cd mcp-discord
+        npm install
+        npm run build
+        ```
+
+        Then use this config, updating the path and token:
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "node",
+              "args": ["/path/to/mcp-discord/build/index.js"],
+              "env": {
+                "DISCORD_TOKEN": "YOUR_DISCORD_TOKEN"
+              }
+            }
+          }
+        }
+        ```
+      </Tab>
+    </Tabs>
+
+    Save the file once you've added the configuration.
+  </Step>
+
+  <Step title="Restart Claude Desktop">
+    Fully quit Claude Desktop — don't just close the window — then reopen it. Claude reads the config file at startup, so a full restart is required for the new MCP server to be detected.
+
+    <Tip>
+      On macOS, right-click the Claude icon in the Dock and choose **Quit** to make sure the app closes completely.
+    </Tip>
+  </Step>
+
+  <Step title="Verify the connection">
+    Open a new chat in Claude Desktop and send this message:
+
+    > List my Discord servers
+
+    Claude should respond with the list of servers your bot has joined. If it does, MCP-Discord is working correctly.
+
+    If Claude says it doesn't have access to Discord tools, double-check that your JSON is valid (no trailing commas, correct bracket nesting) and that you restarted the app fully. You can also try asking Claude: "What MCP tools do you have available?" to see whether the Discord server appears in the list.
+  </Step>
+</Steps>
+
+## Example prompts to try
+
+Once MCP-Discord is connected, you can interact with Discord through natural language:
+
+- "Send a message to #general channel with ID 123456789"
+- "Create a new channel called announcements in my server"
+- "List all the channels in server ID 987654321"
+- "Delete the message with ID 111222333 from channel 444555666"
+
+<Note>
+  Your bot must have the appropriate Discord permissions for each action. If Claude reports a permissions error, revisit your [bot setup](/concepts/bot-setup) to grant the required access.
+</Note>

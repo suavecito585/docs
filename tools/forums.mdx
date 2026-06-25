@@ -1,0 +1,195 @@
+---
+title: "Discord forum tools: posts, threads, and tags"
+sidebarTitle: "Forums"
+description: "Reference for MCP-Discord forum tools: list forum channels, create and reply to posts, manage thread status, and configure tags for forum organization."
+---
+
+Discord forum channels are a special channel type where every post becomes its own thread. Unlike regular text channels — where all messages share a single feed — forums give each topic its own dedicated space that members can browse, filter by tags, and reply to independently. Use the tools in this reference to list forum channels, create and manage posts, reply to threads, and configure tags that help members navigate your forum.
+
+<Tip>
+  When using `discord_list_forum_threads`, `includeArchived` defaults to `true`, so you'll see both active and archived threads in one call. Set it to `false` if you only want to see currently active threads.
+</Tip>
+
+---
+
+## Listing Forum Channels
+
+### `discord_get_forum_channels`
+
+Returns all forum-type channels in a server. Use this to discover forum channel IDs before creating posts or managing tags.
+
+<ParamField body="guildId" type="string" required>
+  The ID of your Discord server. Right-click the server name in Discord (with Developer Mode enabled) to copy the ID.
+</ParamField>
+
+**Example prompt:** *"List all the forum channels in my server."*
+
+---
+
+## Managing Forum Posts
+
+### `discord_create_forum_post`
+
+Creates a new post (thread) inside a forum channel. Every post requires a title and an opening message as its content.
+
+<ParamField body="forumChannelId" type="string" required>
+  The ID of the forum channel to post in.
+</ParamField>
+
+<ParamField body="title" type="string" required>
+  The title of the new forum post. This is the heading members see when browsing the forum.
+</ParamField>
+
+<ParamField body="content" type="string" required>
+  The body text of the opening message for the post.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="tags" type="string[]">
+    An array of tag names to apply to the post at creation time. Tags must already exist on the forum channel — use `discord_get_forum_tags` to see what's available.
+  </ParamField>
+</Accordion>
+
+**Example prompt:** *"Create a forum post in channel `1234567890` titled 'Onboarding checklist' with content 'Here are the steps for getting started…', tagged with 'Pinned' and 'Guide'."*
+
+---
+
+### `discord_get_forum_post`
+
+Retrieves the details and messages of a single forum post by its thread ID.
+
+<ParamField body="threadId" type="string" required>
+  The ID of the forum thread (post) to retrieve.
+</ParamField>
+
+**Example prompt:** *"Show me the forum post with thread ID `9876543210`."*
+
+---
+
+### `discord_list_forum_threads`
+
+Lists all threads (posts) in a forum channel, optionally including archived ones.
+
+<ParamField body="forumChannelId" type="string" required>
+  The ID of the forum channel to list threads from.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="includeArchived" type="boolean">
+    Whether to include archived threads in the results. Defaults to `true`. Set to `false` to return only active threads.
+  </ParamField>
+
+  <ParamField body="limit" type="number">
+    The maximum number of threads to return. Accepts `1` through `100`. Defaults to `100`.
+  </ParamField>
+</Accordion>
+
+**Example prompt:** *"List the 20 most recent active threads in forum channel `1234567890`."*
+
+---
+
+### `discord_reply_to_forum`
+
+Sends a reply message into an existing forum thread.
+
+<ParamField body="threadId" type="string" required>
+  The ID of the forum thread to reply to.
+</ParamField>
+
+<ParamField body="message" type="string" required>
+  The content of your reply message.
+</ParamField>
+
+**Example prompt:** *"Reply to thread `9876543210` with 'Thanks for the report — we'll look into this in the next sprint.'"*
+
+---
+
+### `discord_update_forum_post`
+
+Updates metadata on an existing forum post: rename it, change its tags, archive it, or lock it to prevent further replies.
+
+<ParamField body="threadId" type="string" required>
+  The ID of the forum thread to update.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="name" type="string">
+    A new title for the forum post.
+  </ParamField>
+
+  <ParamField body="tags" type="string[]">
+    An array of tag names or tag IDs to apply to the post. This **replaces all existing tags** on the post with the ones you provide.
+  </ParamField>
+
+  <ParamField body="archived" type="boolean">
+    Set to `true` to archive the thread, or `false` to unarchive it.
+  </ParamField>
+
+  <ParamField body="locked" type="boolean">
+    Set to `true` to lock the thread (only moderators can reply), or `false` to unlock it.
+  </ParamField>
+</Accordion>
+
+**Example prompt:** *"Lock thread `9876543210` and rename it to 'RESOLVED: Onboarding checklist'."*
+
+---
+
+### `discord_delete_forum_post`
+
+Permanently deletes a forum post and all replies within it.
+
+<Warning>
+  Deleting a forum post removes the thread and every message inside it. This action cannot be undone.
+</Warning>
+
+<ParamField body="threadId" type="string" required>
+  The ID of the forum thread to delete.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="reason" type="string">
+    A reason recorded in the server's Audit Log.
+  </ParamField>
+</Accordion>
+
+**Example prompt:** *"Delete the forum post with thread ID `9876543210` — it was posted by mistake."*
+
+---
+
+## Managing Forum Tags
+
+Tags are labels you attach to forum posts to help members filter and browse content. Each tag is defined at the channel level and then applied to individual posts.
+
+### `discord_get_forum_tags`
+
+Returns all tags configured on a forum channel.
+
+<ParamField body="forumChannelId" type="string" required>
+  The ID of the forum channel to fetch tags from.
+</ParamField>
+
+**Example prompt:** *"What tags are available in forum channel `1234567890`?"*
+
+---
+
+### `discord_set_forum_tags`
+
+Defines the complete set of tags for a forum channel. Each tag can have a name, an optional emoji, and an optional flag restricting who can apply it.
+
+<Note>
+  `discord_set_forum_tags` **replaces all existing tags** on the forum channel with the list you provide. If you want to keep current tags, retrieve them first with `discord_get_forum_tags` and include them in your new list.
+</Note>
+
+<ParamField body="forumChannelId" type="string" required>
+  The ID of the forum channel to configure tags on.
+</ParamField>
+
+<ParamField body="tags" type="object[]" required>
+  An array of tag definition objects. Each object supports the following fields:
+
+  - `name` (string, required) — the display name of the tag.
+  - `emoji` (string, optional) — an emoji to show alongside the tag name.
+  - `moderated` (boolean, optional) — when `true`, only moderators with the **Manage Threads** permission can apply or remove this tag.
+</ParamField>
+
+**Example prompt:** *"Set the tags on forum channel `1234567890` to: 'Bug' (🐛, moderator-only), 'Feature Request' (💡), and 'Guide' (📖)."*

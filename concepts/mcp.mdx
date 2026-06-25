@@ -1,0 +1,57 @@
+---
+title: "What is MCP and how does MCP-Discord work?"
+sidebarTitle: "How MCP Works"
+description: "The Model Context Protocol lets AI assistants call external tools. MCP-Discord exposes 44 Discord tools over MCP so your AI can send messages, manage channels, and more."
+---
+
+MCP (Model Context Protocol) is an open protocol that gives AI assistants a standardized way to call external tools and services. Instead of being limited to text generation, an MCP-enabled AI tool can reach out to real-world APIs — reading data, triggering actions, and managing resources — all through a consistent interface that any MCP server can implement.
+
+## How MCP-Discord fits in
+
+MCP-Discord is an MCP server that wraps the Discord API and exposes it as a set of 44 callable tools. When your AI tool connects to MCP-Discord, it gains the ability to send messages, manage channels, handle threads, control roles, and more — all without you writing a single line of Discord API code.
+
+The connection flows through four layers:
+
+<Steps>
+  <Step title="You prompt your AI tool">
+    You ask your AI assistant to do something Discord-related, such as "post a summary to #announcements."
+  </Step>
+  <Step title="The AI tool acts as an MCP client">
+    Your AI tool (Claude Desktop, Cursor, Windsurf, or any MCP-compatible client) discovers the tools MCP-Discord exposes and decides which one to call.
+  </Step>
+  <Step title="MCP-Discord receives the call">
+    The MCP-Discord server receives the tool call over the configured transport, validates the inputs, and translates the request into Discord API calls.
+  </Step>
+  <Step title="Discord executes the action">
+    Discord processes the API request and returns the result. MCP-Discord passes the response back through the chain to your AI tool.
+  </Step>
+</Steps>
+
+## What you need
+
+Before your AI tool can interact with Discord, you need two things in place:
+
+<CardGroup cols={2}>
+  <Card title="An MCP-compatible AI tool" icon="robot">
+    Claude Desktop, Cursor, Windsurf, or any other client that supports the Model Context Protocol. MCP-Discord plugs into whichever tool you already use.
+  </Card>
+  <Card title="A Discord bot" icon="discord">
+    A bot registered in the Discord Developer Portal with the required intents and permissions, and invited to the servers it will manage.
+  </Card>
+</CardGroup>
+
+## Choosing a transport
+
+MCP-Discord supports two transport modes that control how your AI tool communicates with the server:
+
+- **stdio** — MCP-Discord runs as a subprocess of your AI tool and communicates over standard input/output. This is the default and the right choice for local setups with Claude Desktop, Cursor, or Windsurf.
+- **Streamable HTTP** — MCP-Discord runs as a standalone HTTP server. Use this for remote deployments, Docker containers, or environments where multiple clients need to connect.
+
+<CardGroup cols={2}>
+  <Card title="Transport modes" icon="network-wired" href="/concepts/transports">
+    Compare stdio and HTTP transports and see configuration examples for each.
+  </Card>
+  <Card title="Bot setup" icon="gear" href="/concepts/bot-setup">
+    Create a Discord bot, enable the required intents, and invite it to your server.
+  </Card>
+</CardGroup>

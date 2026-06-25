@@ -1,81 +1,219 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
-icon: 'rocket'
+title: "Get started with MCP-Discord in minutes"
+sidebarTitle: "Quickstart"
+description: "Install MCP-Discord, configure your Discord bot, and connect it to your AI assistant in three steps. Works with Claude, Cursor, Windsurf, and any MCP client."
 ---
 
-## Get started in three steps
+This guide walks you through creating a Discord bot, installing MCP-Discord, and connecting it to your AI assistant. By the end you'll be able to send a Discord message directly from a conversation with your AI — no manual API calls required. The whole process takes about five minutes.
 
-Get your documentation site running locally and make your first customization.
+<Steps>
 
-### Step 1: Set up your local environment
+  <Step title="Create a Discord bot">
+    You need a Discord bot token before you can do anything else. If you already have one, skip to the next step.
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+    1. Go to the [Discord Developer Portal](https://discord.com/developers/applications) and sign in.
+    2. Click **New Application**, give it a name, and confirm.
+    3. In the left sidebar, select **Bot**.
+    4. Click **Reset Token**, then copy and save the token somewhere secure.
 
-### Step 2: Deploy your changes
+    <Warning>
+      Your bot token is a secret credential — treat it like a password. Never commit it to source control or share it publicly.
+    </Warning>
+  </Step>
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+  <Step title="Enable required intents">
+    MCP-Discord needs three **Privileged Gateway Intents** to read messages and member data. Without them, most tools will silently fail or return incomplete results.
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+    On the same **Bot** page in the Developer Portal, scroll down to the **Privileged Gateway Intents** section and enable all three toggles:
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+    | Intent | Why it's needed |
+    |---|---|
+    | **Presence Intent** | Lets the bot observe member presence and status. |
+    | **Server Members Intent** | Required to list and look up guild members. |
+    | **Message Content Intent** | Required to read the content of messages. |
 
-### Step 3: Go live
+    Click **Save Changes** after enabling all three.
+  </Step>
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+  <Step title="Set bot permissions and invite to your server">
+    Your bot needs the right permissions to manage the resources you want to control.
+
+    1. In the Developer Portal, go to **OAuth2 → URL Generator**.
+    2. Under **Scopes**, select `bot` and `applications.commands`.
+    3. Under **Bot Permissions**, enable the following (or select **Administrator** for a quick all-in-one option):
+
+    <Accordion title="Required permissions">
+      - View Channel
+      - Send Messages
+      - Send Messages in Threads
+      - Create Public Threads
+      - Manage Messages
+      - Manage Threads
+      - Manage Channels
+      - Manage Webhooks
+      - Manage Roles
+      - Add Reactions
+    </Accordion>
+
+    4. Copy the generated URL, paste it into your browser, and invite the bot to your server.
+
+    <Tip>
+      For development and testing, selecting **Administrator** is the fastest way to ensure the bot has every permission it needs. Switch to granular permissions before deploying to a production server.
+    </Tip>
+  </Step>
+
+  <Step title="Install MCP-Discord">
+    Choose the installation method that best fits your workflow.
+
+    <Tabs>
+      <Tab title="NPX (recommended)">
+        Run MCP-Discord directly without cloning or building anything:
+
+        ```bash
+        npx mcp-discord --config YOUR_DISCORD_BOT_TOKEN
+        ```
+
+        Replace `YOUR_DISCORD_BOT_TOKEN` with the token you copied in Step 1. NPX downloads and caches the package automatically.
+      </Tab>
+      <Tab title="Docker">
+        Pull the pre-built image and run it as a container:
+
+        ```bash
+        docker pull barryy625/mcp-discord:latest
+        ```
+
+        ```bash
+        docker run \
+          -e DISCORD_TOKEN=your_discord_bot_token \
+          -p 8080:8080 \
+          barryy625/mcp-discord:latest
+        ```
+
+        The container exposes port `8080` by default. Pass your token through the `DISCORD_TOKEN` environment variable.
+      </Tab>
+      <Tab title="Manual build">
+        Clone the repository and build from source if you want to customise the server or contribute to the project:
+
+        ```bash
+        git clone https://github.com/barryyip0625/mcp-discord.git
+        cd mcp-discord
+        npm install
+        npm run build
+        ```
+
+        After the build completes, the compiled output lands in the `build/` directory.
+
+        <Note>
+          Node.js v18 or later and npm v7 or later are required. Run `node --version` and `npm --version` to confirm before building.
+        </Note>
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Configure your AI assistant">
+    Point your AI tool at the MCP-Discord server so it can discover and call the Discord tools.
+
+    <Tabs>
+      <Tab title="Claude Desktop">
+        Open your Claude Desktop configuration file:
+
+        - **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
+        - **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+
+        Add the `discord` entry under `mcpServers`:
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "node",
+              "args": ["path/to/mcp-discord/build/index.js"],
+              "env": {
+                "DISCORD_TOKEN": "your_discord_bot_token"
+              }
+            }
+          }
+        }
+        ```
+
+        Replace `path/to/mcp-discord/build/index.js` with the absolute path to the built file on your machine, and substitute your real bot token.
+
+        Save the file, then **restart Claude Desktop** so it picks up the new configuration.
+      </Tab>
+      <Tab title="Cursor">
+        Open Cursor's MCP configuration (`.cursor/mcp.json` in your project or the global config) and add the same block:
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "node",
+              "args": ["path/to/mcp-discord/build/index.js"],
+              "env": {
+                "DISCORD_TOKEN": "your_discord_bot_token"
+              }
+            }
+          }
+        }
+        ```
+
+        Reload the Cursor window after saving.
+      </Tab>
+      <Tab title="Other MCP clients">
+        Any MCP client that supports stdio transport can launch MCP-Discord as a subprocess. Use the following command and environment variable:
+
+        ```bash
+        node build/index.js --config "your_discord_bot_token"
+        ```
+
+        Or pass the token via the `DISCORD_TOKEN` environment variable instead of the `--config` flag. Consult your client's documentation for how to register a stdio MCP server.
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Verify the connection">
+    With your AI assistant running, confirm everything is wired up correctly by calling two tools in sequence.
+
+    **1. Log the bot in**
+
+    Ask your assistant to call `discord_login`. You should see a response confirming the bot's username and ID, for example:
+
+    ```
+    Logged in as MyBot#1234 (ID: 123456789012345678)
+    ```
+
+    **2. List your servers**
+
+    Ask your assistant to call `discord_list_servers`. It returns a list of every server your bot has been invited to:
+
+    ```
+    Found 2 server(s):
+    - My Community (ID: 987654321098765432)
+    - Test Server (ID: 112233445566778899)
+    ```
+
+    If both calls succeed, MCP-Discord is fully connected and ready to use. You can now send messages, create channels, manage roles, and more — all through natural language.
+
+    <Note>
+      If `discord_login` fails, double-check that your bot token is correct, the bot is still active in the Developer Portal, and that the `DISCORD_TOKEN` value in your config matches exactly (no extra spaces or newlines).
+    </Note>
+  </Step>
+
+</Steps>
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
-
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Tools Reference" icon="wrench" href="/tools/overview">
+    Browse all 44 available Discord tools and their parameters.
+  </Card>
+  <Card title="Configuration" icon="sliders" href="/configuration">
+    Explore transport modes, CLI flags, and advanced deployment options.
+  </Card>
+  <Card title="AI Tool Setup" icon="robot" href="/ai-tools/overview">
+    Detailed setup instructions for Claude, Cursor, Windsurf, and more.
+  </Card>
+  <Card title="Bot Setup" icon="gear" href="/concepts/bot-setup">
+    In-depth guide to Discord bot permissions and intent configuration.
+  </Card>
 </CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>

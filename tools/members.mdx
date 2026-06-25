@@ -1,0 +1,57 @@
+---
+title: "Discord member lookup and listing tools"
+sidebarTitle: "Members"
+description: "Reference for MCP-Discord member tools: list server members with their roles and details, look up individual members by user ID, and paginate through large member lists."
+---
+
+These tools let you inspect your server's membership — whether you need a full roster of everyone in the server along with their roles, or just the details for a single user. Use `discord_list_members` to page through all members and `discord_get_member` to look up one member by their user ID.
+
+<Note>
+  `discord_list_members` requires the **Server Members Intent** to be enabled on your Discord bot. You can enable it in the [Discord Developer Portal](https://discord.com/developers/applications) under your application's **Bot** settings. Without this intent, the tool will return an error.
+</Note>
+
+---
+
+## Listing Server Members
+
+### `discord_list_members`
+
+Returns a list of members in a server, including each member's user ID, username, roles, join date, and nickname (if set). Results are ordered by user ID and can be paginated for large servers.
+
+<ParamField body="guildId" type="string" required>
+  The ID of your Discord server. Right-click the server name in Discord (with Developer Mode enabled) to copy the ID.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="limit" type="number">
+    The maximum number of members to return per call. Accepts `1` through `1000`. Defaults to `100`.
+  </ParamField>
+
+  <ParamField body="after" type="string">
+    A user ID to paginate from. The tool returns members whose IDs come **after** this value in ascending order. Use the last user ID from a previous response to fetch the next page.
+  </ParamField>
+</Accordion>
+
+**Pagination:** For servers with more than `limit` members, use the `after` parameter to walk through the full list. Take the user ID of the last member in the current response and pass it as `after` in the next call. Repeat until the response returns fewer members than your limit, which indicates you've reached the end.
+
+**Example prompt:** *"List the first 50 members of my server."*
+
+**Pagination example prompt:** *"Get the next 50 members after user ID `9988776655` in my server."*
+
+---
+
+## Looking Up a Single Member
+
+### `discord_get_member`
+
+Returns the full details for a single server member by their user ID, including their username, display name, roles, join date, avatar, and any server-specific nickname.
+
+<ParamField body="guildId" type="string" required>
+  The ID of the Discord server the member belongs to.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  The ID of the member to look up. Right-click their username in Discord (with Developer Mode enabled) to copy their user ID.
+</ParamField>
+
+**Example prompt:** *"Look up the server profile for user `1234567890` in my server — I want to see their roles and join date."*

@@ -1,39 +1,126 @@
 ---
-title: "Windsurf setup"
-description: "Configure Windsurf for your documentation workflow"
-icon: "water"
+title: "Use MCP-Discord with Windsurf and Cascade"
+sidebarTitle: "Windsurf"
+description: "Set up MCP-Discord in Windsurf so Cascade can send Discord messages, manage channels, and perform server operations from your coding environment."
 ---
 
-Set up Windsurf's Cascade AI assistant to help you write and maintain your Mintlify documentation.
-
-## Prerequisites
-
-- Windsurf editor installed
-
-## Setup
+Windsurf's AI assistant, Cascade, supports MCP servers through a dedicated configuration file. Once you add MCP-Discord to that file and reload the editor, Cascade gains the ability to send messages, manage channels, and interact with your Discord server — without you ever switching context away from your code.
 
 <Steps>
-<Step title="Open your docs directory in Windsurf">
-  Open the root of your documentation repository where `docs.json` is located.
-</Step>
+  <Step title="Install Node.js v18 or later">
+    MCP-Discord is a Node.js application. Verify your Node.js version by running the following in a terminal:
 
-<Step title="Install the Mintlify skill">
-  In the integrated terminal, run:
+    ```bash
+    node --version
+    ```
 
-  ```bash
-  npx skills add https://mintlify.com/docs
-  ```
+    If the output is below `v18.0.0` or the command is not found, download and install the current LTS release from [nodejs.org](https://nodejs.org). After installation, restart your terminal and run the command again to confirm the version is correct.
+  </Step>
 
-  This gives Windsurf Mintlify's component reference, writing standards,
-  and workflow guidance.
-</Step>
+  <Step title="Get your Discord bot token">
+    Cascade interacts with Discord through a bot you own. If you haven't created a bot and added it to your server yet, complete the [bot setup guide](/concepts/bot-setup) first. You'll need the bot token before proceeding.
 
-<Step title="Customize project instructions">
-  Edit `AGENTS.md` in your project root to add project-specific terminology,
-  style preferences, and content boundaries.
-</Step>
+    <Warning>
+      Your bot token grants full control over your bot. Store it securely and never include it in source control or any publicly shared file.
+    </Warning>
+  </Step>
 
-<Step title="Start writing with Cascade">
-  Open a file and use Cascade to draft and edit documentation.
-</Step>
+  <Step title="Open the Windsurf MCP config file">
+    Windsurf stores all MCP server definitions in a single global config file:
+
+    ```
+    ~/.codeium/windsurf/mcp_config.json
+    ```
+
+    Open this file in any text editor. If it doesn't exist, create it along with any missing parent directories. You can do this quickly from a terminal:
+
+    ```bash
+    mkdir -p ~/.codeium/windsurf
+    touch ~/.codeium/windsurf/mcp_config.json
+    ```
+
+    Start with an empty JSON object `{}` if the file is new.
+  </Step>
+
+  <Step title="Add the MCP-Discord server config">
+    Add the Discord server entry to your config file. If other servers are already defined, place the `"discord"` key inside the existing `"mcpServers"` object.
+
+    <Tabs>
+      <Tab title="NPX (recommended)">
+        Use `npx` to run MCP-Discord without a separate installation. Replace `YOUR_DISCORD_TOKEN` with your actual bot token.
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "npx",
+              "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
+            }
+          }
+        }
+        ```
+      </Tab>
+      <Tab title="Manual build">
+        If you prefer to run a local copy, clone and build the repository first:
+
+        ```bash
+        git clone https://github.com/barryyip0625/mcp-discord.git
+        cd mcp-discord
+        npm install
+        npm run build
+        ```
+
+        Then use this config, substituting your actual path and token:
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "node",
+              "args": ["/path/to/mcp-discord/build/index.js"],
+              "env": {
+                "DISCORD_TOKEN": "YOUR_DISCORD_TOKEN"
+              }
+            }
+          }
+        }
+        ```
+      </Tab>
+    </Tabs>
+
+    Save the file before moving to the next step.
+  </Step>
+
+  <Step title="Reload Windsurf and restart Cascade">
+    Windsurf reads the MCP config at startup. To apply your changes, reload the editor window via the command palette (**Cmd+Shift+P** on macOS, **Ctrl+Shift+P** on Windows/Linux) and select **Developer: Reload Window**, or close and reopen Windsurf entirely.
+
+    Once the editor reloads, open a new Cascade chat session. Cascade initializes its available tools at the start of each session, so a fresh chat is required to pick up MCP-Discord.
+
+    <Tip>
+      If Cascade still doesn't show Discord tools after reloading, fully quit Windsurf from the taskbar or Dock rather than just closing the window, then reopen it.
+    </Tip>
+  </Step>
+
+  <Step title="Verify the connection in Cascade">
+    Open a new Cascade chat and send this message:
+
+    > List the Discord servers the bot is in
+
+    Cascade should respond with the servers your bot has joined. A successful response confirms that MCP-Discord is connected and Cascade can invoke Discord tools.
+
+    If Cascade doesn't recognize the request, ask: "What MCP tools are available?" to see whether the Discord server appears in its tool list. If it doesn't, recheck your JSON for syntax errors and confirm the file is saved at the correct path.
+  </Step>
 </Steps>
+
+## Example prompts to try
+
+Once Cascade is connected to MCP-Discord, you can manage Discord directly from your editor:
+
+- "Send a message to #general channel with ID 123456789"
+- "List all channels in server ID 987654321"
+- "Create a new channel called team-updates in my server"
+- "Post the contents of this error log to channel ID 111222333"
+
+<Note>
+  Cascade can only perform actions that your bot is permitted to do in Discord. If an operation fails with a permissions error, review the bot's role settings in your Discord server or revisit the [bot setup guide](/concepts/bot-setup).
+</Note>

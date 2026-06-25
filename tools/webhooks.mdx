@@ -1,0 +1,181 @@
+---
+title: "Discord webhook tools: create, send, and manage"
+sidebarTitle: "Webhooks"
+description: "Reference for MCP-Discord webhook tools: create webhooks for channels, send messages with custom usernames and avatars, edit webhook settings, and delete webhooks."
+---
+
+Webhooks are a lightweight way to post messages to a Discord channel without requiring the bot to be online or authenticated at the moment of delivery. Once you create a webhook for a channel, anyone — or any system — holding the webhook URL can send messages that appear in that channel under a custom name and avatar. This makes webhooks ideal for automated notifications, CI/CD pipelines, monitoring alerts, or any integration where you want messages to look like they come from a named service rather than your bot.
+
+<Note>
+  A webhook is identified by two values: a `webhookId` and a `webhookToken`. Together they form the webhook URL. Treat the token like a password — anyone with it can post to your channel. Store both values securely and avoid sharing them in public repositories or chat.
+</Note>
+
+---
+
+## discord_create_webhook
+
+Creates a new webhook attached to a specific channel. After creation, save the returned `webhookId` and `webhookToken` — you'll need them to send messages or make future edits.
+
+**Example prompt:** *"Create a webhook called 'CI Alerts' in the #deployments channel."*
+
+<ParamField body="channelId" type="string" required>
+  The ID of the channel that the webhook will post into.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  The display name for the webhook. This appears as the author name on messages it sends, unless overridden per message.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="avatar" type="string">
+    A profile image for the webhook. Accepts a publicly accessible image URL or a base64-encoded data URI. If omitted, Discord uses a default avatar.
+  </ParamField>
+
+  <ParamField body="reason" type="string">
+    A short explanation for creating the webhook. This text is recorded in the server's audit log.
+  </ParamField>
+</Accordion>
+
+```text Example prompts
+"Create a webhook named 'Status Bot' in channel 123456789012345678."
+"Set up a 'Deploy Alerts' webhook in #deployments with our company logo as the avatar."
+```
+
+---
+
+## discord_send_webhook_message
+
+Sends a message through an existing webhook. You can override the webhook's default name and avatar on a per-message basis, which lets a single webhook impersonate different services or contexts.
+
+**Example prompt:** *"Send 'Build #142 passed ✅' through the CI webhook."*
+
+<ParamField body="webhookId" type="string" required>
+  The ID of the webhook to send the message through.
+</ParamField>
+
+<ParamField body="webhookToken" type="string" required>
+  The secret token for the webhook. Required to authenticate the send request.
+</ParamField>
+
+<ParamField body="content" type="string" required>
+  The text content of the message to send.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="username" type="string">
+    Overrides the webhook's default display name for this message only.
+  </ParamField>
+
+  <ParamField body="avatarURL" type="string">
+    Overrides the webhook's default avatar for this message only. Must be a publicly accessible image URL.
+  </ParamField>
+
+  <ParamField body="threadId" type="string">
+    Sends the message into a specific thread within the webhook's channel rather than the channel itself.
+  </ParamField>
+</Accordion>
+
+```text Example prompts
+"Send 'Deployment to production complete' via webhook ID 111122223333444455."
+"Post 'Tests failed on branch main ❌' through the CI webhook, using the username 'GitHub Actions'."
+"Send a webhook message to the #incidents thread ID 555566667777888899."
+```
+
+---
+
+## discord_edit_webhook
+
+Updates the settings of an existing webhook. You can rename it, swap its avatar, or move it to a different channel — all without deleting and recreating it.
+
+**Example prompt:** *"Rename the 'CI Alerts' webhook to 'Pipeline Bot' and move it to #ci-cd."*
+
+<ParamField body="webhookId" type="string" required>
+  The ID of the webhook to edit.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="webhookToken" type="string">
+    The webhook's token. Required when editing without bot authentication (token-based edit).
+  </ParamField>
+
+  <ParamField body="name" type="string">
+    A new display name for the webhook.
+  </ParamField>
+
+  <ParamField body="avatar" type="string">
+    A new profile image. Accepts a URL or base64-encoded data URI.
+  </ParamField>
+
+  <ParamField body="channelId" type="string">
+    Move the webhook to this channel. The webhook will post here going forward.
+  </ParamField>
+
+  <ParamField body="reason" type="string">
+    A short explanation for the change, recorded in the server's audit log.
+  </ParamField>
+</Accordion>
+
+```text Example prompts
+"Rename webhook 111122223333444455 to 'Alerts Bot'."
+"Move the deployment webhook to channel 123456789012345678."
+```
+
+---
+
+## discord_delete_webhook
+
+Permanently deletes a webhook. Once deleted, any systems using its URL will no longer be able to post messages. This action cannot be undone.
+
+**Example prompt:** *"Delete the old staging webhook — we don't need it anymore."*
+
+<ParamField body="webhookId" type="string" required>
+  The ID of the webhook to delete.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="webhookToken" type="string">
+    The webhook's token. Required when deleting without bot authentication (token-based delete).
+  </ParamField>
+
+  <ParamField body="reason" type="string">
+    A short explanation for the deletion, recorded in the server's audit log.
+  </ParamField>
+</Accordion>
+
+<Warning>
+  Deleting a webhook is permanent. Make sure no active integrations or services are still using the webhook URL before removing it.
+</Warning>
+
+```text Example prompts
+"Delete webhook 111122223333444455."
+"Remove the old monitoring webhook with reason 'Replaced by new integration'."
+```
+
+---
+
+## End-to-end example: create and use a webhook
+
+Here's a typical workflow for setting up a new webhook and sending your first message through it.
+
+<CodeGroup>
+
+```text Step 1 — Create the webhook
+Prompt: "Create a webhook called 'Release Bot' in channel 123456789012345678."
+
+The AI calls discord_create_webhook and returns:
+  webhookId:    111122223333444455
+  webhookToken: abc123XYZ...
+```
+
+```text Step 2 — Send a message via the webhook
+Prompt: "Send 'v2.4.0 released to production 🚀' through the Release Bot webhook."
+
+The AI calls discord_send_webhook_message with:
+  webhookId:    111122223333444455
+  webhookToken: abc123XYZ...
+  content:      "v2.4.0 released to production 🚀"
+```
+
+</CodeGroup>
+
+The message appears in the channel under the name "Release Bot" — no bot login required at send time.

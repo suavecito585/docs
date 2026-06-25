@@ -1,0 +1,207 @@
+---
+title: "Configure MCP-Discord transport and bot token"
+sidebarTitle: "Configuration"
+description: "Configure MCP-Discord with your Discord bot token, choose between stdio and HTTP transports, and set up port and runtime options for your deployment."
+---
+
+MCP-Discord accepts configuration through environment variables, CLI flags, or both. This page covers every option available, explains when to use each transport mode, and shows ready-to-use configuration snippets for the most common setups.
+
+## Environment variables
+
+Set these variables in your shell, your AI tool's config file, or a process manager like Docker or systemd.
+
+<ParamField body="DISCORD_TOKEN" type="string" required>
+  Your Discord bot token, obtained from the [Discord Developer Portal](https://discord.com/developers/applications). This is the primary credential MCP-Discord uses to authenticate with the Discord API.
+
+  ```bash
+  export DISCORD_TOKEN=your_discord_bot_token
+  ```
+</ParamField>
+
+<Warning>
+  Never hard-code your bot token in source code or commit it to a repository. Use environment variables, a secrets manager, or the `--config` CLI flag for local development. Rotate your token immediately if it is ever exposed.
+</Warning>
+
+## CLI flags
+
+Pass these flags when launching MCP-Discord from the command line or when specifying the `args` array in an AI tool config file.
+
+<ParamField query="--config" type="string">
+  Pass your Discord bot token directly as a CLI argument. Useful for one-off runs or local development when you don't want to set an environment variable.
+
+  ```bash
+  node build/index.js --config "your_discord_bot_token"
+  ```
+
+  When both `--config` and `DISCORD_TOKEN` are provided, `--config` takes precedence.
+</ParamField>
+
+<ParamField query="--transport" type="string" default="stdio">
+  The transport mode to use. Accepted values are `stdio` and `http`.
+
+  ```bash
+  node build/app.js --transport http --port 3000 --config "your_discord_bot_token"
+  ```
+</ParamField>
+
+<ParamField query="--port" type="number" default="8080">
+  The port number the HTTP server listens on. Only applies when `--transport http` is set. Ignored in stdio mode.
+
+  ```bash
+  node build/app.js --transport http --port 3000 --config "your_discord_bot_token"
+  ```
+</ParamField>
+
+## Transport modes
+
+MCP-Discord supports two transports. Choose based on how your AI tool launches and communicates with MCP servers.
+
+<Tabs>
+  <Tab title="stdio (default)">
+    In stdio mode, MCP-Discord communicates over standard input/output. Your AI tool (Claude Desktop, Cursor, Windsurf, etc.) launches MCP-Discord as a child process and exchanges JSON-RPC messages directly over stdin/stdout.
+
+    **When to use stdio:**
+    - Local AI tool integrations where the tool manages the server process lifecycle
+    - Claude Desktop, Cursor, Windsurf, and most desktop MCP clients
+    - Situations where you want zero network overhead and no exposed ports
+
+    **Run manually:**
+
+    ```bash
+    node build/index.js --config "your_discord_bot_token"
+    ```
+
+    Or with an environment variable:
+
+    ```bash
+    DISCORD_TOKEN=your_discord_bot_token node build/index.js
+    ```
+
+    **AI tool config (Claude Desktop / Cursor):**
+
+    Add the following to your MCP client's configuration file. Claude Desktop stores its config at `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS and `%APPDATA%\Claude\claude_desktop_config.json` on Windows.
+
+    ```json
+    {
+      "mcpServers": {
+        "discord": {
+          "command": "node",
+          "args": ["path/to/mcp-discord/build/index.js"],
+          "env": {
+            "DISCORD_TOKEN": "your_discord_bot_token"
+          }
+        }
+      }
+    }
+    ```
+
+    Replace `path/to/mcp-discord/build/index.js` with the absolute path to the built entry point on your machine.
+
+    <Note>
+      Restart your AI tool after editing the config file so it picks up the new server registration.
+    </Note>
+  </Tab>
+  <Tab title="HTTP (Streamable)">
+    In HTTP mode, MCP-Discord starts a long-running HTTP server and exposes an `/mcp` endpoint. MCP clients connect over the network using the [Streamable HTTP transport](https://modelcontextprotocol.io/docs/concepts/transports).
+
+    **When to use HTTP:**
+    - Remote or cloud server deployments
+    - Multiple clients connecting to a shared MCP-Discord instance
+    - Environments where running a child process per client is not practical
+
+    **Run manually:**
+
+    ```bash
+    node build/app.js --transport http --port 3000 --config "your_discord_bot_token"
+    ```
+
+    The server will be reachable at `http://localhost:3000/mcp` (or the host and port you configure).
+
+    **Run with Docker:**
+
+    ```bash
+    docker run \
+      -e DISCORD_TOKEN=your_discord_bot_token \
+      -p 8080:8080 \
+      barryy625/mcp-discord:latest
+    ```
+
+    The Docker image defaults to port `8080`. Map a different host port with `-p <host_port>:8080` if needed.
+
+    **Connect your MCP client:**
+
+    Point your MCP client at the HTTP endpoint. The exact configuration depends on your client — consult its documentation for how to register an HTTP MCP server. The endpoint URL follows the pattern:
+
+    ```
+    http://<host>:<port>/mcp
+    ```
+
+    <Note>
+      The HTTP transport is stateful per session. Each MCP client session maintains its own connection. Make sure your network or firewall rules allow inbound connections on the configured port.
+    </Note>
+  </Tab>
+</Tabs>
+
+## Configuration reference summary
+
+The table below lists every option in one place for quick reference.
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `DISCORD_TOKEN` | env var | — | Discord bot token (required) |
+| `--config` | CLI flag | — | Bot token passed as a CLI argument |
+| `--transport` | CLI flag | `stdio` | Transport mode: `stdio` or `http` |
+| `--port` | CLI flag | `8080` | HTTP server port (HTTP transport only) |
+
+## Complete examples
+
+<CodeGroup>
+
+```bash NPX (stdio)
+npx mcp-discord --config your_discord_bot_token
+```
+
+```bash Node stdio
+DISCORD_TOKEN=your_discord_bot_token node build/index.js
+```
+
+```bash Node HTTP
+node build/app.js \
+  --transport http \
+  --port 3000 \
+  --config "your_discord_bot_token"
+```
+
+```bash Docker HTTP
+docker run \
+  -e DISCORD_TOKEN=your_discord_bot_token \
+  -p 8080:8080 \
+  barryy625/mcp-discord:latest
+```
+
+```json Claude Desktop / Cursor (stdio)
+{
+  "mcpServers": {
+    "discord": {
+      "command": "node",
+      "args": ["path/to/mcp-discord/build/index.js"],
+      "env": {
+        "DISCORD_TOKEN": "your_discord_bot_token"
+      }
+    }
+  }
+}
+```
+
+</CodeGroup>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    New to MCP-Discord? Follow the step-by-step guide to get up and running.
+  </Card>
+  <Card title="Tools Reference" icon="wrench" href="/tools/overview">
+    See all 44 Discord tools and learn what parameters each one accepts.
+  </Card>
+</CardGroup>

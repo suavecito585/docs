@@ -1,0 +1,195 @@
+---
+title: "Discord role management tools: create and assign"
+sidebarTitle: "Roles"
+description: "Reference for MCP-Discord role tools: list server roles, create roles with custom colors and permissions, assign or remove roles from members, and delete roles."
+---
+
+Roles are the foundation of access control in Discord. Each role can carry a set of permissions, a display color, and a position in the server hierarchy — and members can hold multiple roles simultaneously. Use these tools to list your server's roles, create new ones with custom colors and permissions, assign and remove roles from members, and clean up roles you no longer need.
+
+---
+
+## Listing Roles
+
+### `discord_list_roles`
+
+Returns all roles in a server, including their IDs, names, colors, and permission sets.
+
+<ParamField body="guildId" type="string" required>
+  The ID of your Discord server. Right-click the server name in Discord (with Developer Mode enabled) to copy the ID.
+</ParamField>
+
+**Example prompt:** *"List all the roles in my server."*
+
+---
+
+## Creating and Editing Roles
+
+### `discord_create_role`
+
+Creates a new role in a server. You can configure its color, whether it shows separately in the member sidebar, whether it can be @mentioned, and which permissions it grants.
+
+<ParamField body="guildId" type="string" required>
+  The ID of your Discord server.
+</ParamField>
+
+<ParamField body="name" type="string" required>
+  The display name for the new role.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="color" type="string">
+    The color of the role, shown next to the member's name. Accepts a hex color code (e.g. `'#FF5733'`) or a common color name (e.g. `'red'`, `'blue'`).
+  </ParamField>
+
+  <ParamField body="hoist" type="boolean">
+    When `true`, members with this role are displayed in a separate group in the sidebar member list. Useful for highlighting staff or special members.
+  </ParamField>
+
+  <ParamField body="mentionable" type="boolean">
+    When `true`, anyone can @mention this role to notify all members who hold it.
+  </ParamField>
+
+  <ParamField body="permissions" type="string[]">
+    An array of permission flag names to grant this role. See the tip below for common flag names.
+  </ParamField>
+
+  <ParamField body="reason" type="string">
+    A reason recorded in the server's Audit Log.
+  </ParamField>
+</Accordion>
+
+<Tip>
+  Common permission flag names you can use in the `permissions` array include: `ViewChannel`, `SendMessages`, `ManageMessages`, `ManageChannels`, and `Administrator`. Discord has many more — use `discord_list_roles` on an existing role to inspect the flags it already holds, or consult the Discord developer documentation for the full list.
+</Tip>
+
+**Example prompt:** *"Create a role called `Moderator` with color `#3498DB`, hoisted, mentionable, and with `ManageMessages` and `ManageChannels` permissions."*
+
+---
+
+### `discord_edit_role`
+
+Updates an existing role's name, appearance, permissions, or hierarchy position.
+
+<ParamField body="guildId" type="string" required>
+  The ID of the Discord server that owns the role.
+</ParamField>
+
+<ParamField body="roleId" type="string" required>
+  The ID of the role to edit. Right-click the role in **Server Settings → Roles** (with Developer Mode enabled) to copy it.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="name" type="string">
+    A new display name for the role.
+  </ParamField>
+
+  <ParamField body="color" type="string">
+    A new color for the role, as a hex code or color name.
+  </ParamField>
+
+  <ParamField body="hoist" type="boolean">
+    Whether the role should display its members separately in the sidebar.
+  </ParamField>
+
+  <ParamField body="mentionable" type="boolean">
+    Whether the role can be @mentioned by all server members.
+  </ParamField>
+
+  <ParamField body="permissions" type="string[]">
+    The complete set of permission flags to apply to the role. This **replaces** the role's current permissions with the new list.
+  </ParamField>
+
+  <ParamField body="position" type="number">
+    The role's position in the server hierarchy. Higher numbers mean higher authority. The `@everyone` role is always at position `0`.
+  </ParamField>
+
+  <ParamField body="reason" type="string">
+    A reason recorded in the server's Audit Log.
+  </ParamField>
+</Accordion>
+
+<Tip>
+  The same permission flag names apply here as in `discord_create_role` — for example: `ViewChannel`, `SendMessages`, `ManageMessages`, `ManageChannels`, and `Administrator`.
+</Tip>
+
+**Example prompt:** *"Edit role `1122334455` to add `ManageMessages` permission and move it to position 3 in the hierarchy."*
+
+---
+
+### `discord_delete_role`
+
+Permanently removes a role from the server. Members who held the role lose it immediately.
+
+<Warning>
+  Deleting a role is irreversible. Any permissions, channel overrides, or bot configurations that relied on this role will stop working. Double-check the role ID before proceeding.
+</Warning>
+
+<ParamField body="guildId" type="string" required>
+  The ID of the Discord server that owns the role.
+</ParamField>
+
+<ParamField body="roleId" type="string" required>
+  The ID of the role to delete.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="reason" type="string">
+    A reason recorded in the server's Audit Log.
+  </ParamField>
+</Accordion>
+
+**Example prompt:** *"Delete the role with ID `1122334455` — we're retiring the old Tester role."*
+
+---
+
+## Assigning and Removing Roles
+
+### `discord_assign_role`
+
+Grants a role to a specific server member.
+
+<ParamField body="guildId" type="string" required>
+  The ID of the Discord server.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  The ID of the member to assign the role to. Right-click their username in Discord (with Developer Mode enabled) to copy their user ID.
+</ParamField>
+
+<ParamField body="roleId" type="string" required>
+  The ID of the role to assign.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="reason" type="string">
+    A reason recorded in the server's Audit Log.
+  </ParamField>
+</Accordion>
+
+**Example prompt:** *"Assign the `Moderator` role (ID `1122334455`) to user `6677889900` in my server."*
+
+---
+
+### `discord_remove_role`
+
+Removes a role from a specific server member.
+
+<ParamField body="guildId" type="string" required>
+  The ID of the Discord server.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  The ID of the member to remove the role from.
+</ParamField>
+
+<ParamField body="roleId" type="string" required>
+  The ID of the role to remove.
+</ParamField>
+
+<Accordion title="Optional parameters">
+  <ParamField body="reason" type="string">
+    A reason recorded in the server's Audit Log.
+  </ParamField>
+</Accordion>
+
+**Example prompt:** *"Remove the `Moderator` role from user `6677889900` in my server."*

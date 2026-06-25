@@ -1,39 +1,123 @@
 ---
-title: "Cursor setup"
-description: "Configure Cursor for your documentation workflow"
-icon: "arrow-pointer"
+title: "Use MCP-Discord with Cursor AI editor"
+sidebarTitle: "Cursor"
+description: "Configure Cursor to use MCP-Discord so your AI assistant can interact with Discord channels, messages, and server management tools from within your editor."
 ---
 
-Set up Cursor to help you write and maintain your Mintlify documentation.
-
-## Prerequisites
-
-- Cursor editor installed
-
-## Setup
+Cursor has native support for MCP servers, letting its AI assistant call external tools directly from the chat panel. By pointing Cursor at MCP-Discord, you can ask your coding assistant to post build notifications, read channel history, manage your community server, or automate any Discord action — all without leaving your editor.
 
 <Steps>
-<Step title="Open your docs directory in Cursor">
-  Open the root of your documentation repository where `docs.json` is located.
-</Step>
+  <Step title="Install Node.js v18 or later">
+    MCP-Discord requires Node.js. Open a terminal and check your installed version:
 
-<Step title="Install the Mintlify skill">
-  In the integrated terminal, run:
+    ```bash
+    node --version
+    ```
 
-  ```bash
-  npx skills add https://mintlify.com/docs
-  ```
+    If the version is below `v18.0.0` or the command is not found, install the latest LTS release from [nodejs.org](https://nodejs.org). Restart your terminal after installing to pick up the updated `PATH`, then verify the version again.
+  </Step>
 
-  This gives Cursor Mintlify's component reference, writing standards,
-  and workflow guidance.
-</Step>
+  <Step title="Get your Discord bot token">
+    MCP-Discord uses a Discord bot token to authenticate. If you haven't set up a bot yet, follow the [bot setup guide](/concepts/bot-setup) to create one, add it to your server, and copy the token.
 
-<Step title="Customize project instructions">
-  Edit `AGENTS.md` in your project root to add project-specific terminology,
-  style preferences, and content boundaries.
-</Step>
+    <Warning>
+      Treat your bot token like a password. Do not commit it to your repository or expose it in any shared file.
+    </Warning>
+  </Step>
 
-<Step title="Start writing with Cursor">
-  Open a file and use Cursor's AI features to draft and edit documentation.
-</Step>
+  <Step title="Create or open the Cursor MCP config file">
+    Cursor reads MCP server configuration from a JSON file. Choose the scope that fits your use case:
+
+    **Project-level** — applies only to the current project. Create or edit this file in your project root:
+    ```
+    .cursor/mcp.json
+    ```
+
+    **Global** — applies to every project you open in Cursor:
+    ```
+    ~/.cursor/mcp.json
+    ```
+
+    If neither file exists yet, create the file (and its parent directory if needed) as an empty JSON object `{}` and Cursor will populate it from your edits.
+
+    <Tip>
+      Use the project-level config if you want to keep your Discord bot scoped to a specific workspace, or if different projects use different bots.
+    </Tip>
+  </Step>
+
+  <Step title="Add the MCP-Discord server config">
+    Open your chosen config file and add the Discord server entry. If the file already has other servers defined, add the `"discord"` key inside the existing `"mcpServers"` object.
+
+    <Tabs>
+      <Tab title="NPX (recommended)">
+        This option requires no pre-installation — `npx` fetches and runs MCP-Discord automatically. Replace `YOUR_DISCORD_TOKEN` with your bot token.
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "npx",
+              "args": ["mcp-discord", "--config", "YOUR_DISCORD_TOKEN"]
+            }
+          }
+        }
+        ```
+      </Tab>
+      <Tab title="Manual build">
+        Use this option if you prefer a local installation. Clone and build the repository first:
+
+        ```bash
+        git clone https://github.com/barryyip0625/mcp-discord.git
+        cd mcp-discord
+        npm install
+        npm run build
+        ```
+
+        Then add the following config, replacing the path and token with your own values:
+
+        ```json
+        {
+          "mcpServers": {
+            "discord": {
+              "command": "node",
+              "args": ["/path/to/mcp-discord/build/index.js"],
+              "env": {
+                "DISCORD_TOKEN": "YOUR_DISCORD_TOKEN"
+              }
+            }
+          }
+        }
+        ```
+      </Tab>
+    </Tabs>
+
+    Save the file after making your changes.
+  </Step>
+
+  <Step title="Reload Cursor and open a new chat window">
+    Cursor picks up MCP config changes when it starts a fresh session. Reload the window using the command palette (**Cmd+Shift+P** on macOS, **Ctrl+Shift+P** on Windows/Linux) and select **Developer: Reload Window**, or close and reopen Cursor entirely. Then open a new AI chat panel to start a session with the updated toolset.
+  </Step>
+
+  <Step title="Verify the connection">
+    In the Cursor chat panel, send this message to your AI assistant:
+
+    > What Discord servers is the bot in?
+
+    The assistant should respond with the list of servers your bot has joined, confirming that MCP-Discord is connected and working.
+
+    If the assistant says it doesn't have Discord tools available, check that your JSON is valid (no trailing commas) and that you reloaded the window after saving. You can also ask: "What MCP tools do you have?" to confirm whether the Discord server appears.
+  </Step>
 </Steps>
+
+## Example prompts to try
+
+With MCP-Discord active in Cursor, you can run Discord operations from your coding workflow:
+
+- "Send a message to #general channel with ID 123456789"
+- "List all channels in server ID 987654321"
+- "Post a deployment notification to channel ID 111222333"
+- "Create a new channel called releases in my server"
+
+<Note>
+  Your bot needs the appropriate Discord permissions for each action you ask the assistant to perform. If you see a permissions error, revisit the [bot setup guide](/concepts/bot-setup) to grant the missing access.
+</Note>
