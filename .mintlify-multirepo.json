@@ -1,0 +1,12 @@
+{
+  "destinations": [
+    "reliquary-tc"
+  ],
+  "sources": {
+    "reliquary-tc": {
+      "repo": "The-40-Thieves/reliquary-tc",
+      "ref": "docs-site",
+      "sha": "9e6c08fc66d244bb40bf69752d19199c6a3ad183"
+    }
+  }
+}
