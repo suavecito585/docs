@@ -1,55 +1,29 @@
-# Mintlify Starter Kit
+# The 40 Thieves docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+The Mintlify site for The 40 Thieves open-source projects. This repository is the hub: it holds
+the site settings (`docs.base.json`) and the landing page, and pulls each project's docs in from
+its own repository.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+| Project | Source | Published at |
+|---|---|---|
+| Reliquary-TC | `docs-site` branch of [The-40-Thieves/reliquary-tc](https://github.com/The-40-Thieves/reliquary-tc) | `/reliquary-tc` |
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+## How it works
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+`.github/workflows/multirepo.yml` runs [`mintlify/multirepo-action`](https://github.com/mintlify/multirepo-action)
+every hour and on demand. It copies each child listed in `.github/mintlify-multirepo.yml` into its
+destination folder, rewrites the child's links under that path, and generates `docs.json` from
+`docs.base.json` with each child's navigation in place of its `sourceRef`. It commits the result to
+`main`, and Mintlify deploys it.
 
-## AI-assisted writing
+Do not edit synced folders or `docs.json` here: the next sync overwrites them. Change a project's
+docs in its own repository, and change site settings in `docs.base.json`.
 
-Set up your AI coding tool to work with Mintlify:
+To sync now: Actions → Combine docs → Run workflow, or `gh workflow run multirepo.yml -R suavecito585/docs`.
 
-```bash
-npx skills add https://mintlify.com/docs
-```
+## Add a project
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
-
-See the [AI tools guides](/ai-tools) for tool-specific setup.
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
-npm i -g mint
-```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
-mint dev
-```
-
-View your local preview at `http://localhost:3000`.
-
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+1. In the project's repository, publish a Mintlify site (a folder with `docs.json` and pages) to a
+   branch or folder.
+2. Add it to `.github/mintlify-multirepo.yml` with a `destination`.
+3. Add a tab with `{ "sourceRef": "<owner>/<repo>" }` to `docs.base.json`, and a card to `index.mdx`.
