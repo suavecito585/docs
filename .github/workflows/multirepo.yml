@@ -1,0 +1,29 @@
+name: Combine docs
+
+# Pulls each child repository's docs (.github/mintlify-multirepo.yml) into this repository and
+# regenerates docs.json from docs.base.json. Mintlify deploys on the resulting push to main.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"
+  repository_dispatch:
+    types: [docs-updated]
+
+concurrency:
+  group: mintlify-multirepo
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # Every child is public, so the default github.token can read them.
+      # mode: push commits the sync straight to main (only when something changed), so no
+      # "Allow GitHub Actions to create pull requests" repository setting is needed.
+      - uses: mintlify/multirepo-action@8820336fb28d990ef38ea06f3274e14e762b67cb # v1.0.0
+        with:
+          mode: push

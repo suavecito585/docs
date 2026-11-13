@@ -1,75 +1,19 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "luma",
-  "name": "MCP-Discord",
+  "theme": "mint",
+  "name": "The 40 Thieves",
+  "description": "Documentation for The 40 Thieves open-source projects.",
   "colors": {
-    "primary": "#848c8e",
-    "light": "#11161e",
-    "dark": "#cfd0d2"
-  },
-  "favicon": "https://media.brand.dev/2b01fe20-c04b-4a1d-a2f9-1d2789c50a7a.jpg",
-  "logo": {
-    "light": "https://media.brand.dev/5ffd6ce4-2434-4b4b-920a-f8cacac8b48b.svg",
-    "dark": "https://media.brand.dev/5ffd6ce4-2434-4b4b-920a-f8cacac8b48b.svg"
+    "primary": "#7C3AED",
+    "light": "#A78BFA",
+    "dark": "#6D28D9"
   },
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "quickstart",
-              "configuration"
-            ]
-          },
-          {
-            "group": "AI Tool Setup",
-            "pages": [
-              "ai-tools/overview",
-              "ai-tools/claude-desktop",
-              "ai-tools/cursor",
-              "ai-tools/windsurf"
-            ]
-          },
-          {
-            "group": "Core Concepts",
-            "pages": [
-              "concepts/mcp",
-              "concepts/bot-setup",
-              "concepts/transports"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Tools Reference",
-        "groups": [
-          {
-            "group": "Overview",
-            "pages": [
-              "tools/overview"
-            ]
-          },
-          {
-            "group": "Messaging",
-            "pages": [
-              "tools/messages",
-              "tools/reactions",
-              "tools/webhooks"
-            ]
-          },
-          {
-            "group": "Server Management",
-            "pages": [
-              "tools/channels",
-              "tools/forums",
-              "tools/roles",
-              "tools/members"
-            ]
-          }
+        "tab": "Home",
+        "pages": [
+          "index"
         ]
       }
     ]
@@ -77,7 +21,12 @@
   "navbar": {
     "primary": {
       "type": "github",
-      "href": "https://github.com/suavecito585/mcp-discord"
+      "href": "https://github.com/The-40-Thieves"
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/The-40-Thieves"
     }
   }
 }
