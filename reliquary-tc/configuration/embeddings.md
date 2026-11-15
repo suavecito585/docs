@@ -5,7 +5,7 @@ description: The embeddings provider — zero-config local by default, or point 
 
 Semantic search and graph-seeded retrieval both need vectors, produced by an **embeddings
 provider**. `embeddings` is absent from a minimal config on purpose: the default provider is
-`local`, a bundled, fully offline dense embedder — no Ollama, no API key, no network call after
+`local`, a dense embedder that runs in-process — no Ollama, no API key, no network call after
 the first run. **On npm it is an explicit install:** `reliquary-tc` does not install the embedder package,
 so run `npm install -g @the-40-thieves/reliquary-tc-embedder-local@<same version>` (or let `reliquary-tc setup`
 offer to). A source checkout and the Docker image need nothing extra; see [Availability by install

@@ -9,11 +9,11 @@ The fastest way to try it, no install step and no config file:
 npx reliquary-tc /path/to/vault
 ```
 
-Every note tool and lexical search work immediately. Semantic search is designed to work out of
-the box too — a bundled, fully offline embedder handles indexing with no config at all — but see
-[Embeddings](/reliquary-tc/configuration/embeddings/) for where that's actually reachable today (a source
-checkout; not yet the `npx`/npm install above or the Docker image, pending the embedder package's
-first publish). A config file is the upgrade for everything else: ACLs, human-in-the-loop
+Every note tool and lexical search work immediately. Semantic search needs the local embedder,
+which an npm install leaves out: with the `npx`/npm install above it stays off until you install
+`@the-40-thieves/reliquary-tc-embedder-local` at the same version, and the server prints the exact
+command at startup. The Docker image, the `.mcpb` bundle and the standalone binaries carry the
+embedder, so there it works with no config at all — see [Embeddings](/reliquary-tc/configuration/embeddings/). A config file is the upgrade for everything else: ACLs, human-in-the-loop
 confirmation, the generative tier, and choosing a different (Ollama or hosted) embeddings
 provider — the rest of this page walks through that path.
 
@@ -32,7 +32,7 @@ reliquary-tc setup
 leaving reliquary-tc to detect it again — silently, and possibly differently — every
 time it boots. It finds your Obsidian vaults (from the local Obsidian install, or
 `--vault <path>` if you'd rather point it at one directly), decides an embeddings
-provider (an existing index's provider is always kept; otherwise the bundled local
+provider (an existing index's provider is always kept; otherwise the local
 embedder if it can run here, then a running Ollama with an embedding model already
 pulled, else the local embedder anyway with a notice), and prints each decision with
 its reason before writing anything. A hosted provider (OpenAI, Voyage, Cohere) is

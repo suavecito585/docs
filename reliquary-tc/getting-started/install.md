@@ -42,7 +42,7 @@ same models. WASM embedding is roughly 4x slower than native in the measured two
 | **npm** | No by default. Install the embedder at the same version (`npm install -g @the-40-thieves/reliquary-tc-embedder-local@<same version>`, or let `reliquary-tc setup` offer to); it then installs the generated base with only the host's optional ONNX runtime package. On Intel macOS it runs on the WASM backend. | Yes | Yes (prebuilds); pure-JS fallback elsewhere | About 15-46 MB of ONNX runtime files plus the bundled base, down from about 585 MB |
 | **Standalone binary** | Yes on Linux x64 and arm64, macOS arm64 and x64, and Windows x64: the embedder and its selected native/WASM ONNX runtime are inside the one file. | Yes (embedded) | Pure-JS fallback | About 14 MB larger than a binary without the embedder |
 | **One-click `.mcpb`** | Yes on Linux x64 and arm64, macOS arm64 and x64, and Windows x64 | Yes | Pure-JS fallback (one universal bundle) | About 66 MB, up from about 2 MB; it carries all native runtimes plus the macOS x64 WASM assets |
-| **Docker** | Not part of the matrix; see [Docker](#docker) below. | | | |
+| **Docker** | Yes: the image carries the built embedder. See [Docker](#docker) below. | | | |
 
 The model weights are not in any of them: the first search downloads and checksum-verifies
 them (about 140 MB) into the cache directory, then works offline.
@@ -94,15 +94,20 @@ lexical search is unaffected.
 ```sh
 docker run --rm -v "$HOME/vaults:/vaults" \
   -v "$HOME/.config/reliquary-tc:/config" \
+  -v reliquary-tc-cache:/data/cache \
+  -e RELIQUARY_TC_CACHE_DIR=/data/cache \
   ghcr.io/the-40-thieves/reliquary-tc:2.0.1 /config/config.json
 ```
 
 The image is an `oven/bun:1.4.2-slim` build (Debian, glibc): the native prebuilds are
 gnu, so a glibc base keeps them loadable instead of forcing the pure-JS fallback. The
-bundled local embedder (and local reranker) cannot resolve here either — the image
-ships only the built server bundle, no `node_modules` — so the same npm-install
-caveat above applies: set a hosted or self-hosted `embeddings.provider` for semantic
-search until the embedder package's first npm publish lands.
+image carries the built local embedder next to the server, so the default `local`
+provider resolves with no extra install. The model weights are not in the image: the
+first search downloads them into the cache directory. The command above puts the cache
+on the named volume `reliquary-tc-cache` (`RELIQUARY_TC_CACHE_DIR` sets `cacheDir`), so
+the weights and the index survive `--rm` and a new container. Without that volume every
+new container downloads the weights and rebuilds the index. More in
+[Docker deployment](/reliquary-tc/deployment/docker/).
 
 ## One-click bundle (`.mcpb`) {#one-click-bundle-mcpb}
 
