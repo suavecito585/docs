@@ -310,6 +310,11 @@
       }
     ]
   },
+  "seo": {
+    "metatags": {
+      "canonical": "https://docs.the40thieves.dev"
+    }
+  },
   "navbar": {
     "primary": {
       "type": "github",
