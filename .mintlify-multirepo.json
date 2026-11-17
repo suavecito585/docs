@@ -1,7 +1,8 @@
 {
   "destinations": [
     "reliquary-tc",
-    "own-the-house"
+    "own-the-house",
+    "codecalc"
   ],
   "sources": {
     "reliquary-tc": {
@@ -12,6 +13,11 @@
     "own-the-house": {
       "repo": "The-40-Thieves/own-the-house",
       "sha": "361fe60ce78939ddb0726e6cc015671fe721fa9d"
+    },
+    "codecalc": {
+      "repo": "The-40-Thieves/codecalc",
+      "ref": "docs-site",
+      "sha": "b8ea1c80118391c9117d6b57889d3ca393d90fb2"
     }
   }
 }

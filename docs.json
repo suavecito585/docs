@@ -335,6 +335,61 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "codecalc",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "codecalc/index"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "codecalc/distribution",
+              "codecalc/embedding",
+              "codecalc/tool-selection-eval"
+            ]
+          },
+          {
+            "group": "Contract",
+            "pages": [
+              "codecalc/contract/index",
+              "codecalc/contract/provider-v1"
+            ]
+          },
+          {
+            "group": "Deployment",
+            "pages": [
+              "codecalc/deployment/index"
+            ]
+          },
+          {
+            "group": "Design",
+            "pages": [
+              "codecalc/design/2026-08-10-tool-facade",
+              "codecalc/design/2026-08-19-extension-sdk",
+              "codecalc/design/2026-09-08-branch-reachability",
+              "codecalc/design/2026-09-08-mcp-apps-verification-views",
+              "codecalc/design/2026-10-27-self-updating-runtimes"
+            ]
+          },
+          {
+            "group": "Extensions",
+            "pages": [
+              "codecalc/extensions/index"
+            ]
+          },
+          {
+            "group": "Security",
+            "pages": [
+              "codecalc/security/audit-2026-08-21",
+              "codecalc/security/ostif-application"
+            ]
+          }
+        ]
       }
     ]
   },
