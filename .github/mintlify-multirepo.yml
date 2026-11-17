@@ -16,3 +16,7 @@ sources:
     ref: docs-site
     destination: codecalc
     name: codecalc
+  - repo: The-40-Thieves/alexandria-mcp
+    ref: docs-site
+    destination: alexandria-mcp
+    name: alexandria-mcp

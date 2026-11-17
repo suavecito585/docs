@@ -25,6 +25,10 @@
       {
         "tab": "codecalc",
         "groups": [{ "sourceRef": "The-40-Thieves/codecalc" }]
+      },
+      {
+        "tab": "alexandria-mcp",
+        "groups": [{ "sourceRef": "The-40-Thieves/alexandria-mcp" }]
       }
     ]
   },
