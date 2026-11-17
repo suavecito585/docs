@@ -1,12 +1,17 @@
 {
   "destinations": [
-    "reliquary-tc"
+    "reliquary-tc",
+    "own-the-house"
   ],
   "sources": {
     "reliquary-tc": {
       "repo": "The-40-Thieves/reliquary-tc",
       "ref": "docs-site",
       "sha": "74e17a29c426f43f3a3a258015d7c5123472f02f"
+    },
+    "own-the-house": {
+      "repo": "The-40-Thieves/own-the-house",
+      "sha": "361fe60ce78939ddb0726e6cc015671fe721fa9d"
     }
   }
 }

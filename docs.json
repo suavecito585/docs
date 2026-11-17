@@ -307,6 +307,34 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "own-the-house",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "own-the-house/index"
+            ]
+          },
+          {
+            "group": "The weekend build",
+            "pages": [
+              "own-the-house/00-provision-oci",
+              "own-the-house/01-lock-the-edge",
+              "own-the-house/02-gateway",
+              "own-the-house/03-agent-and-tools",
+              "own-the-house/04-memory"
+            ]
+          },
+          {
+            "group": "After the build",
+            "pages": [
+              "own-the-house/grow-into",
+              "own-the-house/links"
+            ]
+          }
+        ]
       }
     ]
   },
