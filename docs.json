@@ -390,6 +390,27 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "alexandria-mcp",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "alexandria-mcp/index"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "alexandria-mcp/answer-eval",
+              "alexandria-mcp/cloudflare",
+              "alexandria-mcp/fetch-tier-runtime",
+              "alexandria-mcp/routing-eval",
+              "alexandria-mcp/sources"
+            ]
+          }
+        ]
       }
     ]
   },
