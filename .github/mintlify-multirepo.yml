@@ -12,3 +12,7 @@ sources:
     path: docs
     destination: own-the-house
     name: own-the-house
+  - repo: The-40-Thieves/codecalc
+    ref: docs-site
+    destination: codecalc
+    name: codecalc
