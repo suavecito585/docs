@@ -1,9 +1,14 @@
 # Child repositories pulled into this site by .github/workflows/multirepo.yml.
-# Each child publishes an already-assembled Mintlify site to the branch named in `ref`;
-# `destination` is both the folder here and the URL path. Edit content in the child repo:
-# synced folders and docs.json are overwritten on every run. Site settings live in docs.base.json.
+# Each child holds a Mintlify site (a docs.json and its pages) in the folder `path` on the branch
+# `ref`; the defaults are the repository root and the default branch. `destination` is both the
+# folder here and the URL path. Edit content in the child repo: synced folders and docs.json are
+# overwritten on every run. Site settings live in docs.base.json.
 sources:
   - repo: The-40-Thieves/reliquary-tc
     ref: docs-site
     destination: reliquary-tc
     name: Reliquary-TC
+  - repo: The-40-Thieves/own-the-house
+    path: docs
+    destination: own-the-house
+    name: own-the-house

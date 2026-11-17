@@ -17,6 +17,10 @@
       {
         "tab": "Reliquary-TC",
         "groups": [{ "sourceRef": "The-40-Thieves/reliquary-tc" }]
+      },
+      {
+        "tab": "own-the-house",
+        "groups": [{ "sourceRef": "The-40-Thieves/own-the-house" }]
       }
     ]
   },
