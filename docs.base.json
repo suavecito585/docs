@@ -21,6 +21,10 @@
       {
         "tab": "own-the-house",
         "groups": [{ "sourceRef": "The-40-Thieves/own-the-house" }]
+      },
+      {
+        "tab": "codecalc",
+        "groups": [{ "sourceRef": "The-40-Thieves/codecalc" }]
       }
     ]
   },
