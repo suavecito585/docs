@@ -411,6 +411,24 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "audio-forge",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "audio-forge/index"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "audio-forge/architecture_and_engineering_guide",
+              "audio-forge/code_review_2026-10-25"
+            ]
+          }
+        ]
       }
     ]
   },

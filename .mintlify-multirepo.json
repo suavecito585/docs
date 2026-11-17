@@ -3,7 +3,8 @@
     "reliquary-tc",
     "own-the-house",
     "codecalc",
-    "alexandria-mcp"
+    "alexandria-mcp",
+    "audio-forge"
   ],
   "sources": {
     "reliquary-tc": {
@@ -24,6 +25,11 @@
       "repo": "The-40-Thieves/alexandria-mcp",
       "ref": "docs-site",
       "sha": "519f3d28b88d5ac22ed788137ba0019afe377f83"
+    },
+    "audio-forge": {
+      "repo": "The-40-Thieves/audio-forge",
+      "ref": "docs-site",
+      "sha": "7977093bed693a770dfaacd75bfb72909d20cc52"
     }
   }
 }
