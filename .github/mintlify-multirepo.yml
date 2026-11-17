@@ -20,3 +20,7 @@ sources:
     ref: docs-site
     destination: alexandria-mcp
     name: alexandria-mcp
+  - repo: The-40-Thieves/audio-forge
+    ref: docs-site
+    destination: audio-forge
+    name: audio-forge

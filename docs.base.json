@@ -29,6 +29,10 @@
       {
         "tab": "alexandria-mcp",
         "groups": [{ "sourceRef": "The-40-Thieves/alexandria-mcp" }]
+      },
+      {
+        "tab": "audio-forge",
+        "groups": [{ "sourceRef": "The-40-Thieves/audio-forge" }]
       }
     ]
   },
