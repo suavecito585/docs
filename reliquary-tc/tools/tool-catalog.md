@@ -16,7 +16,7 @@ build itself and are not committed.
 </Note>
 
 {/* BEGIN GENERATED: tools */}
-_185 tools. Access is a coarse hint; the required scopes are authoritative. Profile is which `toolFacade.profile` value(s) make the tool visible/callable — see [Tool profile](https://reliquary-tc.the40thieves.io/tools/#tool-profile)._
+_185 tools. Access is a coarse hint; the required scopes are authoritative. Profile is which `toolFacade.profile` value(s) make the tool visible/callable — see [Tool profile](https://docs.the40thieves.dev/reliquary-tc/tools#tool-profile)._
 
 | Tool | Access | Profile | Scopes | Description |
 |---|---|---|---|---|
