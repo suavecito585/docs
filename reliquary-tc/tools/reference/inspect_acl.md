@@ -44,7 +44,7 @@ No human confirmation is required to call this tool.
 | Field | Type | Always present | Description |
 |---|---|---|---|
 | `allowed` | `boolean` | yes | — |
-| `denied_by` | `enum` |  | One of: `"read_only"`, `"read_paths"`, `"write_paths"`, `"delete_paths"`, `"schema_file"`, `"scope"`, `"path_scope"` |
+| `denied_by` | `enum` |  | One of: `"read_only"`, `"read_paths"`, `"write_paths"`, `"delete_paths"`, `"schema_file"`, `"scope"`, `"path_scope"`, `"hard_link"`, `"invalid_write_path"` |
 | `kill_switch` | `boolean` | yes | — |
 | `matched_rule` | `string \| null` | yes | — |
 | `effective_scopes` | `string[]` | yes | — |
