@@ -395,6 +395,6 @@ gate in CI.
 | THE-1131 | New `toolFacade.profile` (`"full"` \| `"core"`, default `"full"`) — an OPT-IN, smaller curated tool surface; the default does not change (THE-1131, PR #984). | CHANGELOG.md (1.31.4) | 9 |
 | THE-1133 | `@modelcontextprotocol/server` 2.0.0→2.1.0, dev `@modelcontextprotocol/sdk` 1.29.0→1.30.1 (THE-1133, PR 1). | CHANGELOG.md (1.31.4) | 1 |
 
-376 distinct ticket(s) across 906 source file(s) under
+376 distinct ticket(s) across 907 source file(s) under
 `packages/*/src`; 222 resolved to a public summary, 154
 fall back to the internal-reference placeholder above.
