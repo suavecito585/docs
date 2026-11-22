@@ -451,7 +451,7 @@ entry.
 | `tokenTtlSeconds` | int, 86400 | Token lifetime. |
 | `jwks` / `jwksFile` / `jwksUri` | object / path / URL *(optional)* | Asymmetric verification (RS256/ES256/EdDSA) from an inline JWKS, a file loaded once at boot, or an authorization server's key set URL (pinned, https and public-only by default; see [Remote key set](/reliquary-tc/security/auth-model/#remote-key-set-authjwksuri)). Rotation is `kid`-based. HS256 verifies only against the secret and asymmetric algs only against the JWKS, so alg-confusion is structurally impossible. |
 | `algorithms` | string[] *(optional)* | Asymmetric-algorithm allowlist. |
-| `allowMissingAudience` | bool *(optional)* | Opt-out for the deprecation on a JWKS key source that binds no audience (`audience` unset and no complete Protected Resource Metadata). That is a startup error from the next minor release; `true` stops the warning. It does not waive the load-time rule that a JWKS needs `audience` or `resource`. |
+| `allowMissingAudience` | bool *(optional)* | Opt-out for the audience check on a JWKS key source. By default `resource` is enforced as the token audience when `audience` is unset; `true` turns that off, so tokens are accepted regardless of `aud` (unless `authorizationServers` is set too). It does not waive the load-time rule that a JWKS needs `audience` or `resource`. |
 | `resource`, `authorizationServers`, `resourceName`, `scopesSupported` | *(optional)* | RFC 9728 Protected Resource Metadata: when `resource` + one `authorizationServers` entry are set, the HTTP transport advertises a PRM document + `WWW-Authenticate` challenge (OAuth 2.1 resource-server role). |
 | `anonymousDiscovery` | `none \| list`, `none` | What a request with no token gets. `none`: `401` + challenge on every request, `tools/list` included (what grok.com and Claude need to start a sign-in). `list`: ChatGPT's mixed mode, an anonymous `initialize` / `tools/list` is answered (tools carry `securitySchemes`) and an anonymous `tools/call` returns a tool error with `_meta["mcp/www_authenticate"]`. Needs `jwt` or `oidc` and `resource`; see [what a request with no token gets](/reliquary-tc/security/auth-model/#what-a-request-with-no-token-gets-authanonymousdiscovery). |
 
@@ -527,8 +527,8 @@ The config file is JSON. The loader reads no other format.
 Cross-checks refused at load: `auth.authorizationServers`, when set, must list `auth.as.issuer` first (it defaults
 to `[issuer]`); `auth.jwksUri` may not point at this server's own `/.well-known/jwks.json`; `clientId`s must be
 unique. Hand-minted tokens keep their rules: enabling the AS does not bind an `aud` to them (a hand-minted HS256
-token without `aud` is still accepted); only `auth.audience`, or an explicit `auth.authorizationServers` list
-with `auth.resource`, does that. The tokens the AS issues are always checked against `auth.resource`.
+token without `aud` is still accepted); only `auth.audience`, an explicit `auth.authorizationServers` list
+with `auth.resource`, or a JWKS key source with `auth.resource` (unless `auth.allowMissingAudience` is `true`), does that. The tokens the AS issues are always checked against `auth.resource`.
 
 A configured `auth.jwks` or `auth.jwksFile` that contains the public key of the server's own `as` key stops the
 server at boot, naming the kid: a JWKS key is verified under the hand-minted-token rules, which would let a token

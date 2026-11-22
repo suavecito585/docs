@@ -129,25 +129,22 @@ each request` instead. A key set that answers `200` with something that is not a
 is rejected as `idp_unavailable`, like any other failed fetch.
 
 **Bind an audience.** A JWKS trusts an external issuer, so without an enforced `aud` it accepts a token that
-issuer minted for another service. Set `auth.audience`. `auth.resource` is used as the audience only when
-Protected Resource Metadata is complete (`auth.authorizationServers` set too); a `resource`-only config binds
-nothing. That works for one more release with a deprecation (startup line, `doctor` `auth.jwks-audience`,
-`server_health`) and becomes a startup error in the next minor release. `auth.allowMissingAudience: true` is the
-explicit opt-out and stops the warning. The warning is printed on every boot of such a config, including a
-stdio-only one.
+issuer minted for another service. Set `auth.audience`, or `auth.resource`: with a JWKS and no `auth.audience`,
+`auth.resource` is enforced as the audience, whether or not `auth.authorizationServers` is set. A token with no
+`aud`, or an `aud` for another service, is refused. `auth.allowMissingAudience: true` is the explicit opt-out: the
+resource is then enforced only when `auth.authorizationServers` is set too. A server that verifies only with a
+shared secret (`auth.jwtSecret`) is not affected: its hand-minted tokens without `aud` are still accepted.
 
-The two places that read `auth.resource` currently disagree, on purpose until that release:
+The config schema and the verifier agree on `auth.resource`:
 
 | Config with a JWKS (`jwks`, `jwksFile` or `jwksUri`) | Config schema | Verifier |
 |---|---|---|
 | `auth.audience` set | accepted | enforces it |
 | `auth.resource` **and** `auth.authorizationServers` | accepted | enforces `resource` as the audience |
-| `auth.resource` **alone** | accepted (counts as "an audience is bound") | enforces **no** audience: a token minted for another service is accepted, with the deprecation as the only signal |
+| `auth.resource` **alone** | accepted | enforces `resource` as the audience (no audience with `allowMissingAudience: true`) |
 | neither `audience` nor `resource` | refused at config load | n/a |
 
-In the next minor release the two are aligned (a `resource`-only JWKS config stops being accepted without an
-enforced audience). Until then, set `auth.audience` explicitly. `test/auth-resource-alone-audience.test.ts` pins
-the current behaviour.
+`test/auth-resource-alone-audience.test.ts` pins this behaviour.
 
 **Key rotation is `kid`-based:** publish the old and new keys together in the JWKS
 set and the token's `kid` header selects the verifying key (handled by `jose`).
