@@ -21,7 +21,7 @@ Delete a note (to the vault's .trash mirror, or permanently). Destructive — re
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -40,6 +40,7 @@ A single-use `elicit_token` (or a transport-verified confirmation) is required o
 | `path` | `string` | yes | — | length 1–1024 |
 | `permanent` | `boolean` |  | `false` | — |
 | `prev_hash` | `string` |  | — | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 
