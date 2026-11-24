@@ -67,14 +67,14 @@ No human confirmation is required to call this tool.
 | `frontmatter_failures[].path` | `string` | with parent | — |
 | `frontmatter_failures[].error` | `string` | with parent | — |
 | `notes_read_refused` | `number` |  | — |
+| `notes_read_failed` | `number` |  | — |
 | `read_refusals` | `object[]` |  | — |
 | `read_refusals[].path` | `string` | with parent | — |
 | `read_refusals[].error` | `string` | with parent | — |
 | `model` | `string` |  | — |
 | `dimensions` | `number` |  | — |
-| `status` | `enum` |  | One of: `"working"` |
 
-_4 more field(s) not shown; `describe_capability` returns the full output schema._
+_5 more field(s) not shown; `describe_capability` returns the full output schema._
 
 ## Related tools {#related-tools}
 
