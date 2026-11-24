@@ -21,7 +21,7 @@ Modify a task in place by line number (status, dates, priority, tags). Reopening
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -39,6 +39,7 @@ The handler asks for confirmation only when a call crosses a boundary (for examp
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
 | `path` | `string` | yes | — | length 1–1024 |
 | `line` | `integer` | yes | — | range ≥ 1 |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `set` | `object` |  | — | — |
 | `set.status` | `enum` |  | — | One of: `"todo"`, `"done"`, `"cancelled"`, `"in_progress"`, `"scheduled"` |
 | `set.description` | `string` |  | — | — |

@@ -21,7 +21,7 @@ Patch a section of the note currently open in the live Obsidian session (patch_n
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -47,6 +47,9 @@ No human confirmation is required to call this tool.
 | `old_string` | `string` |  | — | Required for replace_text, refused for append, prepend and replace: the exact text to find inside the anchor's section, or inside the whole note body when there is no anchor; it must occur exactly once. To move or reorder sections, anchor on an enclosing heading and put the whole span here. length ≥ 1 |
 | `new_string` | `string` |  | — | Required for replace_text, refused for append, prepend and replace: the text that takes old_string's place (may be empty to delete). |
 | `prev_hash` | `string` |  | — | — |
+| `options` | `object` |  | `{}` | — |
+| `options.idempotency_key` | `string` |  | — | length 1–128 |
+| `options.create_dirs` | `boolean` |  | `true` | — |
 | `confirm_replace` | `boolean` |  | `false` | — |
 | `response_format` | `enum` |  | — | concise returns only the high-signal fields; detailed (the shipped default) returns the full payload. Errors and safety warnings are never trimmed. When omitted, the server's tools.defaults.responseFormat applies. One of: `"concise"`, `"detailed"` |
 | `verbosity` | `enum` |  | — | Legacy alias for response_format: terse = concise, full = detailed. One of: `"full"`, `"terse"` |

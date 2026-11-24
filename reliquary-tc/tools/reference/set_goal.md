@@ -21,7 +21,7 @@ Record a STATED goal for a vault — what the user is trying to accomplish, as d
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -37,6 +37,7 @@ No human confirmation is required to call this tool.
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
 | `text` | `string` | yes | — | length 1–2000 |
 | `target_date` | `integer` |  | — | range ≥ 1 |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

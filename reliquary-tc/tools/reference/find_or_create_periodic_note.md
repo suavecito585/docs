@@ -21,7 +21,7 @@ Get the periodic note for a period + date, creating it (empty/template) if absen
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -39,6 +39,7 @@ No human confirmation is required to call this tool.
 | `date` | `string` |  | — | — |
 | `include_content` | `boolean` |  | `true` | — |
 | `expand_template` | `boolean` |  | `false` | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `response_format` | `enum` |  | — | concise returns only the high-signal fields; detailed (the shipped default) returns the full payload. Errors and safety warnings are never trimmed. When omitted, the server's tools.defaults.responseFormat applies. One of: `"concise"`, `"detailed"` |
 | `verbosity` | `enum` |  | — | Legacy alias for response_format: terse = concise, full = detailed. One of: `"full"`, `"terse"` |
 

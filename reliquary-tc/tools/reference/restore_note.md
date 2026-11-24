@@ -21,7 +21,7 @@ Restore a note to a prior snapshot's content. Destructive — overwrites the cur
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -40,6 +40,7 @@ The handler asks for confirmation only when a call crosses a boundary (for examp
 | `path` | `string` | yes | — | length 1–1024 |
 | `snapshot_id` | `integer` | yes | — | range ≥ 1 |
 | `prev_hash` | `string` |  | — | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `elicit_token` | `string` |  | — | pattern `^[a-f0-9]{32}$` |
 
 ## Output {#output}

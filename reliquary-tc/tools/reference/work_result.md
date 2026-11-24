@@ -21,7 +21,7 @@ Record how the task you just finished went, as -1 (it failed or produced a bad r
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -34,6 +34,7 @@ No human confirmation is required to call this tool.
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `result` | `number` | yes | — | -1 bad, 0 neutral, +1 good. Allowed values: -1, 0, 1. range -1–1 |
 | `as_of` | `integer` |  | — | Epoch ms ceiling: only calls at or before this are judged. Defaults to now. Use it when work continued while you were deciding — the server cannot observe your task boundary and will otherwise sweep in anything committed before this call landed. range ≥ 1 |
 

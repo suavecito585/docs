@@ -21,7 +21,7 @@ Correct or retire ONE existing memory observation, addressed by its `observation
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -39,6 +39,7 @@ No human confirmation is required to call this tool.
 | `observation_id` | `string` | yes | — | pattern `^obs_[1-9][0-9]*$` |
 | `observation` | `string` |  | — | length ≥ 1 |
 | `retire` | `boolean` |  | — | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

@@ -21,7 +21,7 @@ Finalize a workspace session, appending a session_end record to its JSONL trace.
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -37,6 +37,7 @@ No human confirmation is required to call this tool.
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
 | `session_id` | `string` | yes | — | length ≥ 1 |
 | `end_metadata` | `Record<string, any>` |  | — | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

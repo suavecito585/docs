@@ -21,7 +21,7 @@ Report which retrieved chunks actually helped. CALL THIS after you act on a sear
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -34,6 +34,7 @@ No human confirmation is required to call this tool.
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `chunk_id` | `string` |  | — | Single form: the chunk to stamp. Send chunk_id + feedback together, or verdicts, never both. length ≥ 1 |
 | `feedback` | `integer` |  | — | Single form: -1, 0 or +1 for chunk_id. Send it with chunk_id. range -1–1 |
 | `verdicts` | `object[]` |  | — | Batch form (1-50 items): one \{chunk_id, feedback\} per chunk, all applied in one transaction. Send verdicts OR chunk_id + feedback, never both. items 1–50 |

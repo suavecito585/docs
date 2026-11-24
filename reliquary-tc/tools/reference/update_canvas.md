@@ -21,7 +21,7 @@ Patch a .canvas: add/remove/update nodes and edges by id. Unknown fields are pre
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -37,6 +37,7 @@ The handler asks for confirmation only when a call crosses a boundary (for examp
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `path` | `string` | yes | — | length 1–1024 |
 | `add_nodes` | `object[]` |  | — | — |
 | `add_nodes[].id` | `string` | with parent | — | length ≥ 1 |

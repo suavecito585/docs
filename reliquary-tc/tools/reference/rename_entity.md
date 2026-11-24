@@ -21,7 +21,7 @@ Rename a memory entity and/or change its lifecycle status (active/retired). At l
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -38,6 +38,7 @@ No human confirmation is required to call this tool.
 | `entity_id` | `string` | yes | — | length ≥ 1 |
 | `new_name` | `string` |  | — | length ≥ 1 |
 | `status` | `enum` |  | — | One of: `"active"`, `"retired"` |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

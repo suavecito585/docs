@@ -21,7 +21,7 @@ Add, remove, or update elements in an existing Excalidraw note via the companion
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -40,6 +40,7 @@ No human confirmation is required to call this tool.
 | `remove_element_ids` | `string[]` |  | — | — |
 | `update_elements` | `Record<string, Record<string, any>>` |  | — | — |
 | `update_app_state` | `Record<string, any>` |  | — | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

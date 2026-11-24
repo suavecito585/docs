@@ -21,7 +21,7 @@ Stage vault files for the next commit, via the Obsidian Git companion bridge. Wr
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -36,6 +36,7 @@ No human confirmation is required to call this tool.
 |---|---|---|---|---|
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
 | `paths` | `string[]` | yes | — | items 1–200 |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

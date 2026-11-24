@@ -21,7 +21,7 @@ Apply a wiki changeset in one step: a new page (path, frontmatter, the body you 
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -37,6 +37,7 @@ The handler asks for confirmation only when a call crosses a boundary (for examp
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `topic` | `string` |  | — | What the page covers, for the duplicate check and link validation. Default: the page's file name. length 1–500 |
 | `type` | `string` |  | — | Page type to check the frontmatter against. Default: the frontmatter's `type`. length 1–100 |
 | `sources` | `string[]` |  | — | Notes or URLs the page draws on; notes among them are expected to be linked. items ≤ 50 |

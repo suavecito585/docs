@@ -21,7 +21,7 @@ Create a new Excalidraw note via the companion plugin. Overwriting an existing d
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -41,6 +41,7 @@ The handler asks for confirmation only when a call crosses a boundary (for examp
 | `template` | `enum` |  | — | One of: `"blank"`, `"compressed-json"`, `"custom"` |
 | `elements` | `Record<string, any>[]` |  | — | — |
 | `overwrite` | `boolean` |  | `false` | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `elicit_token` | `string` |  | — | pattern `^[a-f0-9]{32}$` |
 
 ## Output {#output}

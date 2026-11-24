@@ -21,7 +21,7 @@ Delete a memory entity outright — the escape hatch for 'created it by accident
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -40,6 +40,7 @@ A single-use `elicit_token` (or a transport-verified confirmation) is required o
 | `entity_id` | `string` | yes | — | length ≥ 1 |
 | `cascade` | `boolean` |  | `false` | — |
 | `permanent` | `boolean` |  | `false` | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

@@ -21,7 +21,7 @@ Add a card to a Kanban column (by name). Appends `- [ ] text` (or `- [x]` when c
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -35,6 +35,7 @@ No human confirmation is required to call this tool.
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 | `path` | `string` | yes | — | length 1–1024 |
 | `column` | `string` | yes | — | length ≥ 1 |
 | `text` | `string` | yes | — | length ≥ 1 |

@@ -21,7 +21,7 @@ Remove a typed relation between two memory entities — the inverse of link_enti
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -38,6 +38,7 @@ No human confirmation is required to call this tool.
 | `source_id` | `string` | yes | — | length ≥ 1 |
 | `target_id` | `string` | yes | — | length ≥ 1 |
 | `relation_type` | `string` | yes | — | length ≥ 1 |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

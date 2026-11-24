@@ -21,7 +21,7 @@ Tombstone an experiential episode — the first-party forget verb for the work-m
 | Read-only | no |
 | Destructive | no |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -35,6 +35,7 @@ No human confirmation is required to call this tool.
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `episode_id` | `string` | yes | — | length ≥ 1 |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 

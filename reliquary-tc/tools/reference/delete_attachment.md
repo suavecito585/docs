@@ -21,7 +21,7 @@ Delete an attachment (to the vault's .trash mirror, or permanently). Destructive
 | Read-only | no |
 | Destructive | yes |
 | Idempotent | no |
-| Accepts an idempotency key | no |
+| Accepts an idempotency key | yes |
 
 `Idempotent` is the advisory MCP `idempotentHint`. `Destructive` is also `yes` for a tool that
 asks for confirmation only on some calls.
@@ -39,6 +39,7 @@ A single-use `elicit_token` (or a transport-verified confirmation) is required o
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
 | `path` | `string` | yes | — | length 1–1024 |
 | `permanent` | `boolean` |  | `false` | — |
+| `idempotency_key` | `string` |  | — | length 1–128 |
 
 ## Output {#output}
 
