@@ -45,7 +45,7 @@ No human confirmation is required to call this tool.
 | `session_id` | `string` | yes | — |
 | `ended_at` | `number` | yes | — |
 | `trace_path` | `string` | yes | — |
-| `event_count` | `number` | yes | — |
+| `event_count` | `number` |  | — |
 | `duration_ms` | `number` | yes | — |
 | `redactions` | `integer` |  | range ≥ 0 |
 

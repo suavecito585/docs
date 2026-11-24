@@ -50,7 +50,7 @@ No human confirmation is required to call this tool.
 | `date` | `string` | yes | — |
 | `path` | `string` | yes | — |
 | `updated_at` | `string` | yes | — |
-| `appended_bytes` | `integer` | yes | range ≥ -9007199254740991 |
+| `appended_bytes` | `integer` |  | range ≥ -9007199254740991 |
 | `created` | `boolean` | yes | — |
 | `redactions` | `number` |  | — |
 | `conventions` | `object` |  | — |
