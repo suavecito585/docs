@@ -36,6 +36,11 @@ reason `no_identity`:
   workspace sessions `start_session` / `end_session`; `vault_context` refuses only its `include_work` leg;
 - any call carrying an **`idempotency_key`**, because the key's namespace is the caller.
 
+HTTP clients can also send an `Idempotency-Key` header for tools that accept idempotency keys. It is
+used only when the arguments carry no key, is refused with `validation_error` if it disagrees with
+the argument, and is ignored for a JSON-RPC batch. A keyed call from a token with no `sub` is refused
+with `no_identity`, the same as an argument key.
+
 Everything else keeps working for such a token (reading and writing notes, search, discovery).
 
 **Why a refusal and not an identity derived from the token (`jti`, a hash).** A derived identity is
