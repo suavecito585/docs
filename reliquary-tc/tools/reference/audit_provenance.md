@@ -1,10 +1,10 @@
 ---
 title: "audit_provenance"
-description: "Provenance audit: flag claim-bearing notes that lack a 'sources' frontmatter field and cite nothing in the body."
+description: "Provenance audit: flag claim-bearing notes with no 'sources' frontmatter (by default 'source' or 'references' also count) and nothing cited in the body."
 editUrl: false
 ---
 
-Provenance audit: flag claim-bearing notes that lack a 'sources' frontmatter field and cite nothing in the body. A note with no sources field but a URL, a footnote definition or a Sources/References section with a list or link is reported as cited in body only (body_only), not missing. Reports coverage of sources/confidence/verified across the readable note set. Read-only. Excludes daily notes, templates, and index files by default; tune scope with include/exclude globs, the field name, and types (only notes whose frontmatter type matches are claim-bearing; the rest are counted in skipped_by_type). response_format=concise drops the field echo, with_provenance and the by_folder breakdown.
+Provenance audit: flag claim-bearing notes with no 'sources' frontmatter (by default 'source' or 'references' also count) and nothing cited in the body. A note with no sources field but a URL, a footnote definition or a Sources/References section with a list or link is reported as cited in body only (body_only), not missing. Reports coverage of sources/confidence/verified across the readable note set. Read-only. Excludes daily notes, templates, and index files by default; tune scope with include/exclude globs, the field name, and types (only notes whose frontmatter type matches are claim-bearing; the rest are counted in skipped_by_type). response_format=concise drops the field echo, with_provenance and the by_folder breakdown.
 
 | | |
 |---|---|
@@ -35,7 +35,7 @@ No human confirmation is required to call this tool.
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `vault` | `string` |  | — | Vault id. May be omitted when only one vault is available. length 1–64; pattern `^[a-z0-9_-]+$` |
-| `field` | `string` |  | `"sources"` | length ≥ 1 |
+| `field` | `string` |  | — | length ≥ 1 |
 | `include` | `string[]` |  | — | items ≤ 64 |
 | `exclude` | `string[]` |  | — | items ≤ 64 |
 | `types` | `string[]` |  | — | items 1–64 |
@@ -55,6 +55,8 @@ No human confirmation is required to call this tool.
 | `notes_read_refused` | `integer` |  | range ≥ -9007199254740991 |
 | `vault` | `string` | yes | — |
 | `field` | `string` |  | — |
+| `field_aliases` | `Record<string, string>` |  | — |
+| `field_aliases_count` | `number` |  | — |
 | `scanned` | `number` | yes | — |
 | `with_provenance` | `number` |  | — |
 | `missing_provenance` | `number` | yes | — |
