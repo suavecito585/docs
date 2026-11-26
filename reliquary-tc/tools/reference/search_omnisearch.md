@@ -48,6 +48,6 @@ No human confirmation is required to call this tool.
 
 ## Related tools {#related-tools}
 
-Other tools in the `search` domain: [`query_datacore`](/reliquary-tc/tools/reference/query_datacore/), [`search`](/reliquary-tc/tools/reference/search/), [`search_and_read`](/reliquary-tc/tools/reference/search_and_read/), [`search_dql`](/reliquary-tc/tools/reference/search_dql/), [`search_jsonlogic`](/reliquary-tc/tools/reference/search_jsonlogic/), [`search_regex`](/reliquary-tc/tools/reference/search_regex/), [`search_semantic`](/reliquary-tc/tools/reference/search_semantic/), [`search_text`](/reliquary-tc/tools/reference/search_text/), [`search_vault`](/reliquary-tc/tools/reference/search_vault/).
+Other tools in the `search` domain: [`query_datacore`](/reliquary-tc/tools/reference/query_datacore/), [`search`](/reliquary-tc/tools/reference/search/), [`search_and_read`](/reliquary-tc/tools/reference/search_and_read/), [`search_dql`](/reliquary-tc/tools/reference/search_dql/), [`search_jsonlogic`](/reliquary-tc/tools/reference/search_jsonlogic/), [`search_mentions`](/reliquary-tc/tools/reference/search_mentions/), [`search_regex`](/reliquary-tc/tools/reference/search_regex/), [`search_semantic`](/reliquary-tc/tools/reference/search_semantic/), [`search_text`](/reliquary-tc/tools/reference/search_text/), [`search_vault`](/reliquary-tc/tools/reference/search_vault/).
 
 Back to the [tool catalog](/reliquary-tc/tools/tool-catalog/).

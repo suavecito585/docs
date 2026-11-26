@@ -206,6 +206,7 @@
                   "reliquary-tc/tools/reference/search_and_read",
                   "reliquary-tc/tools/reference/search_dql",
                   "reliquary-tc/tools/reference/search_jsonlogic",
+                  "reliquary-tc/tools/reference/search_mentions",
                   "reliquary-tc/tools/reference/search_omnisearch",
                   "reliquary-tc/tools/reference/search_regex",
                   "reliquary-tc/tools/reference/search_semantic",

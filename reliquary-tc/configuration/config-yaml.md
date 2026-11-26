@@ -193,6 +193,7 @@ until this generator existed, by which point five entire defaulted blocks had go
   "toolFacade": {
     "mode": "triad",
     "explainAutoMode": false,
+    "openaiMentions": false,
     "outputSchema": "full",
     "advertise": "all",
     "triadHotPath": false,
@@ -665,6 +666,7 @@ Derived edges added to the `vault_edges` graph beyond authored wikilinks, so a m
 | `toolFacade.autoClients` | *(optional)* | Deprecated with `auto`. Only used when `mode` is `auto`: substring-of-clientInfo.name -> mode overrides, checked before the built-in table. |
 | `toolFacade.outputSchema` | `full` | Whether `tools/list` advertises each tool's `outputSchema`: `full` (unchanged) or `omit`. Results carry `structuredContent` and a text block either way; `omit` only drops the advertisement, for clients that mishandle it (claude.ai is reported to fail tools that declare one, Claude Desktop with older schema drafts, Cursor when a root is not an object). Applies to the `flat` surface and to the `search`/`fetch` pair on `triad` (and the hot-path tools with `triadHotPath`); the triad's three meta-tools and `domain` advertise no `outputSchema`. See [MCP compatibility](https://github.com/The-40-Thieves/reliquary-tc/blob/main/docs/MCP-COMPATIBILITY.md). |
 | `toolFacade.explainAutoMode` | `false` | Deprecated with `auto`. Only used when `mode` is `auto`: log one structured explain line per resolution and return it as the `explanation` field of `server_health`'s `toolFacade` block. Observability only; the chosen mode is unchanged. |
+| `toolFacade.openaiMentions` | `false` | Lets ChatGPT's @-mention picker search the vault. When `true`, the server advertises an `openai/mentions` capability naming the `search_mentions` tool, and lists that tool directly on the `triad` and `domain` surfaces. `search_mentions` is read-only and returns `resource_link` items for notes the caller may read, skipping Obsidian's Excluded files. The tool is registered either way, so the `flat` listing includes it regardless; with `false` the capability and the `triad` and `domain` listings are unchanged. |
 | `tools.defaults.responseFormat` | `detailed` | The `response_format` a tool call gets when it sets neither `response_format` nor the legacy `verbosity` alias. `detailed` is the full payload (unchanged output); `concise` returns only the high-signal fields of every tool that supports `response_format` (see [Response format](/reliquary-tc/tools/#response-format), which lists the covered and exempt tools). It is also the only selector for MCP `resources/read`, which takes no parameters (concise returns the note body without its frontmatter). Errors and safety warnings are never trimmed. |
 | `toolVisibility.allowed` | *(optional)* | Name allowlist for `tools/list` (absent = all; `[]` = none). |
 | `toolVisibility.hidden` / `hiddenTags` | `[]` | Drop from `tools/list` but keep callable (lean surface, not a security boundary). Tags are the fixed vocabulary in [Tool tags](/reliquary-tc/tools/#tool-tags), e.g. `destructive`, `bulk`, `external-network`. |
