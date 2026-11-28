@@ -73,6 +73,7 @@ until this generator existed, by which point five entire defaulted blocks had go
     "plainHttpHosts": []
   },
   "indexing": {
+    "writePreparation": "legacy",
     "writeConcurrency": 8,
     "writeConcurrencyPerVault": 4,
     "queueMax": 1000,

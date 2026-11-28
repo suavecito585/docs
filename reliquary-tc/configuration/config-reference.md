@@ -238,6 +238,7 @@ Generated (`bun run docgen:render`); do not hand-edit the region between the mar
 | `indexing.streamingWalk` | `boolean` | `false` |  | Walk the vault lazily per-directory (walkVaultStream) instead of materializing the full sorted file list before indexing starts. Lower peak memory on large vaults; index output is unchanged either way. |
 | `indexing.writeConcurrency` | `number` | `8` |  | Ceiling on concurrent index/embed calls across ALL vaults. |
 | `indexing.writeConcurrencyPerVault` | `number` | `4` |  | Ceiling on concurrent index/embed calls for a single vault. |
+| `indexing.writePreparation` | `enum(legacy\|modular)` | `"legacy"` |  | Single-note preparation: "legacy" (default) keeps the existing path; "modular" opts into isolated preparation. Both use the same index format and configured limits. Change the selection and restart to roll back without rebuilding the index. |
 
 ### `maintenance` {#maintenance}
 
